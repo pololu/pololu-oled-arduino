@@ -19,39 +19,47 @@
 
 class PololuSH1106GenericCore
 {
-  // Pin assignments
-  static const uint8_t mosiPin = IO_D5, clkPin = 1, dcPin = 17, rstPin = 0;
-
 public:
+  void setRstPin(uint8_t pin) { rstPin = pin; }
+  void setSckPin(uint8_t pin) { /*TODO*/ }
+  void setMosiPin(uint8_t pin) { /*TODO*/ }
+  void setDcPin(uint8_t pin) { dcPin = pin; }
+  void setCsPin(uint8_t pin) { csPin = pin; }
+
   void initPins()
   {
+    pinMode(rstPin, OUTPUT);
+    pinMode(dcPin, OUTPUT);
+    pinMode(csPin, OUTPUT);
     FastGPIO::Pin<clkPin>::setOutputLow();
   }
 
   void reset()
   {
-    FastGPIO::Pin<rstPin>::setOutputLow();
+    digitalWrite(rstPin, LOW);
     delayMicroseconds(10);
-    FastGPIO::Pin<rstPin>::setOutputHigh();
+    digitalWrite(rstPin, HIGH);
     delayMicroseconds(10);
   }
 
   void sh1106TransferStart()
   {
+    if (csPin != 255) { digitalWrite(csPin, LOW); }
   }
 
   void sh1106TransferEnd()
   {
+    if (csPin != 255) { digitalWrite(csPin, HIGH); }
   }
 
   void sh1106CommandMode()
   {
-    FastGPIO::Pin<dcPin>::setOutputLow();
+    digitalWrite(dcPin, LOW);
   }
 
   void sh1106DataMode()
   {
-    FastGPIO::Pin<dcPin>::setOutputHigh();
+    digitalWrite(dcPin, HIGH);
   }
 
   void sh1106Write(uint8_t d)
@@ -65,6 +73,12 @@ public:
     _P3PP_OLED_SEND_BIT(1);
     _P3PP_OLED_SEND_BIT(0);
   }
+
+private:
+
+  uint8_t rstPin = 13, dcPin = 13, csPin = 255;
+
+  static const uint8_t mosiPin = IO_D5, clkPin = 1;
 };
 
 class PololuSH1106Generic : public PololuSH1106Base<PololuSH1106GenericCore>
