@@ -2,6 +2,8 @@
 
 PololuSH1106Generic display;
 
+uint32_t count = 0;
+
 void setup()
 {
   display.setRstPin(0);
@@ -12,12 +14,13 @@ void setup()
   delay(1000);
 }
 
-uint16_t count = 0;
-
 void loop()
 {
   display.gotoXY(0, 0);
   display.print(count);
+  display.print("       ");
+  display.gotoXY(0, 1);
+  display.print(millis() >> 8);
   display.print("       ");
   count++;
 }

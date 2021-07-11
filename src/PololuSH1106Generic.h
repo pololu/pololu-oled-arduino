@@ -15,7 +15,7 @@ public:
     pinMode(clkPin, OUTPUT);
     digitalWrite(clkPin, LOW);
     pinMode(mosiPin, OUTPUT);
-    pinMode(dcPin, OUTPUT);
+    if (dcPin != 255) { pinMode(dcPin, OUTPUT); }
     if (csPin != 255) { pinMode(csPin, OUTPUT); }
   }
 
@@ -39,16 +39,25 @@ public:
 
   void sh1106CommandMode()
   {
-    digitalWrite(dcPin, LOW);
+    dataMode = 0;
+    if (dcPin != 255) { digitalWrite(dcPin, LOW); }
   }
 
   void sh1106DataMode()
   {
-    digitalWrite(dcPin, HIGH);
+    dataMode = 1;
+    if (dcPin != 255) { digitalWrite(dcPin, HIGH); }
   }
 
   void sh1106Write(uint8_t d)
   {
+    if (dcPin == 255)
+    {
+      digitalWrite(clkPin, LOW);
+      digitalWrite(mosiPin, dataMode);
+      digitalWrite(clkPin, HIGH);
+    }
+
     digitalWrite(clkPin, LOW);
     digitalWrite(mosiPin, d >> 7 & 1);
     digitalWrite(clkPin, HIGH);
@@ -83,18 +92,35 @@ public:
   }
 
 private:
-  uint8_t rstPin = 13, mosiPin = 13, clkPin = 13, dcPin = 13, csPin = 255;
+  uint8_t rstPin = 13, mosiPin = 13, clkPin = 13, dcPin = 255, csPin = 255;
+  bool dataMode;
 };
 
 class PololuSH1106Generic : public PololuSH1106Base<PololuSH1106GenericCore>
 {
 public:
+  // @brief Sets the pin to use to control the SH1106 RES (reset) pin.
   void setRstPin(uint8_t pin) { core.setRstPin(pin); }
+
+  // @brief Sets the pin to use to control the SH1106 CLK/SCL/D0 (clock input)
+  // pin.
   void setClkPin(uint8_t pin) { core.setClkPin(pin); }
+
+  // @brief Sets the pin to use to control the SH1106 MOSI/MOS/SI/D1
+  // (data input) pin.
   void setMosiPin(uint8_t pin) { core.setMosiPin(pin); }
+
+  // @brief Sets the pin to use to control the SH1106 DC/A0
+  // (data mode / not command mode) pin.
+  //
+  // If you are using 3-wire SPI mode so there is no DC pin to control, you can
+  // just avoid calling this, or supply an argument of 255.
   void setDcPin(uint8_t pin) { core.setDcPin(pin); }
 
+  // @brief Sets the pin to use to control the SH1106 CS (chip select) pin.
+  //
   // If there is no CS pin, you can just avoid calling this, or supply
-  // an argument of 255.
+  // an argument of 255.  You should ensure the CS pin of the OLED is driven
+  // low at all times, or at least when you are communicating with it.
   void setCsPin(uint8_t pin) { core.setCsPin(pin); }
 };
