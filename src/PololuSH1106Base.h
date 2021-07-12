@@ -1,3 +1,10 @@
+// Copyright (C) Pololu Corporation.  See www.pololu.com for details.
+
+/// @file PololuSH1106Base.h
+///
+/// This file is not meant to be included directly:
+/// include PololuOLED.h instead.
+
 #define SH1106_SET_COLUMN_ADDR_LOW 0x00
 #define SH1106_SET_COLUMN_ADDR_HIGH 0x10
 #define SH1106_SET_CONTRAST 0x81
@@ -10,10 +17,10 @@
 /// @brief This class makes it easy to display text and graphics on a
 /// 128x64 SH1106 OLED.
 ///
-/// @section core Core object
+/// @section core Core class
 ///
 /// Instead of passing pin numbers to this class to specify what pins your
-/// OLED is on, you pass a class as a first template parameter.  This class
+/// OLED is on, you pass a core class as a first template parameter.  This class
 /// must implement the following public functions which take care of
 /// communication with the SH1106 at a low level:
 ///
@@ -24,6 +31,8 @@
 /// - void sh1106CommandMode();
 /// - void sh1106DataMode();
 /// - void sh1106Write(uint8_t);
+///
+/// For an example implementation of a core class, see PololuSH1106GenericCore.
 ///
 /// @section text-buffer Text buffer
 ///

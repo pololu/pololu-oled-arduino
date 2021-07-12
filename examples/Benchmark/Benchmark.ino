@@ -1,9 +1,12 @@
-// Sketch to help us test the speed of all the OLED update routines.
+// Sketch to help test the speed of the OLED update routines.
 
 #include <PololuOLED.h>
 
-//#define USE_POLOLU_3PI_PLUS_32U4_LIB
+// By default we use the PololuSH1106Generic class.  Comment out
+// USE_GENERIC and uncomment one of the other options if you want
+// to benchmark a different class.
 #define USE_GENERIC
+//#define USE_POLOLU_3PI_PLUS_32U4_LIB
 
 #ifdef USE_POLOLU_3PI_PLUS_32U4_LIB
 #include <Pololu3piPlus32U4.h>
@@ -19,17 +22,6 @@ uint32_t startTime;
 uint32_t benchmarkTime;
 
 uint8_t graphics[8 * 128];
-
-const uint8_t smile[] PROGMEM = {
-  0b00000,
-  0b01010,
-  0b01010,
-  0b01010,
-  0b00000,
-  0b10001,
-  0b01110,
-  0b00000,
-};
 
 const uint8_t counterClockwiseChar[] PROGMEM = {
   0b01110,
@@ -95,7 +87,6 @@ void setup()
 #endif
 
   drawGraphics();
-  display.loadCustomCharacter(smile, 1);
   display.loadCustomCharacter(clockwiseChar, 6);
   display.loadCustomCharacter(counterClockwiseChar, 7);
 
@@ -126,7 +117,7 @@ void loop()
 {
   display.clear();
   display.setLayout8x2();
-  display.display(); // first display takes extra time clearing RAM needlessly
+  display.display(); // first display takes extra time clearing RAM
 
   display.noAutoDisplay();
   display.gotoXY(0, 0);
@@ -151,7 +142,7 @@ void loop()
   benchmarkReport(F("8x2, partial update, 8 chars"));
 
   display.setLayout8x2WithGraphics(graphics);
-  display.display(); // first display takes extra time clearing RAM needlessly
+  display.display(); // first display takes extra time clearing RAM
 
   benchmarkStart();
   display.display();
