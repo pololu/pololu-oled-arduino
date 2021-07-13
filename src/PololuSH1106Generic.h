@@ -84,6 +84,9 @@ public:
   // it will call sh1106TransferEnd when it is done.
   void sh1106TransferStart()
   {
+    pinMode(clkPin, OUTPUT);
+    digitalWrite(clkPin, LOW);
+    pinMode(mosiPin, OUTPUT);
     if (csPin != 255) { digitalWrite(csPin, LOW); }
   }
 
@@ -190,8 +193,8 @@ public:
   // pin.
   void setClkPin(uint8_t pin) { core.setClkPin(pin); }
 
-  // @brief Sets the pin to use to control the SH1106 MOSI/MOS/SI/D1
-  // (data input) pin.
+  // @brief Sets the pin to use to control the
+  // SH1106 MOSI/MOS/SI/D1 (data input) pin.
   void setMosiPin(uint8_t pin) { core.setMosiPin(pin); }
 
   // @brief Sets the pin to use to control the SH1106 DC/A0
