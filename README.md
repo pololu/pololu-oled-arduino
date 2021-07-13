@@ -52,7 +52,35 @@ reset the OLED to known state.
 
 You can also connect another I/O pin to your module's CS (chip select) pin.
 This is optional, but it allows you to use the clock and data pins
-for other purposes while you are not writing to the OLED.
+for other purposes while you are not updated the OLED.
 
+
+### Software
+
+You can install this library using the Arduino library manager:
+
+1. In the Arduino IDE, open the "Tools" menu and select "Manage Libraries...".
+2. Search for "PololuOLED".
+3. Click the PololuOLED entry in the list.
+4. Click "Install".
+
+If this does not work, you can manually install the library:
+
+1. Download the
+   [latest release archive from GitHub](https://github.com/pololu/pololu-oled-arduino/releases)
+   and decompress it.
+2. Rename the folder "pololu-oled-arduino-xxxx" to "PololuOLED".
+3. Drag the "PololuOLED" folder into the "libraries" directory inside your
+   Arduino sketchbook directory. You can view your sketchbook location by
+   opening the "File" menu and selecting "Preferences" in the Arduino IDE. If
+   there is not already a "libraries" folder in that location, you should make
+   the folder yourself.
+4. After installing the library, restart the Arduino IDE.
+
+
+### Creating a PololuSH1106 object
+
+# TODO: finish this
 
 [3760]: https://www.pololu.com/product/3760
+
