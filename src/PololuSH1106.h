@@ -1,11 +1,8 @@
 // Copyright (C) Pololu Corporation.  See www.pololu.com for details.
 
-/// @file PololuSH1106Generic.h
-///
-/// This file is not meant to be included directly:
-/// include PololuOLED.h instead.
-
 #pragma once
+
+#include "PololuSH1106Base.h"
 
 /// @brief SH1106 core class implemented using Arduino I/O functions.
 ///
@@ -22,7 +19,7 @@
 /// This class has several functions for configuring which pins to use, and
 /// those functions should be called at the beginning of your program before
 /// any functions that use the pins.
-class PololuSH1106GenericCore
+class PololuSH1106Core
 {
 public:
   // @brief Sets the pin to use to control the SH1106 RES (reset) pin.
@@ -165,7 +162,7 @@ private:
 
 /// @brief SH1106 class implemented using Arduino I/O functions.
 ///
-/// This uses PololUSH1106Base and PololuSH1106GenericCore to provide a
+/// This uses PololUSH1106Base and PololuSH1106Core to provide a
 /// complete class that can be used to draw text or graphics on an SH1106
 /// connected via SPI.
 ///
@@ -180,9 +177,12 @@ private:
 ///
 /// After specifying your pins by callin those functions, you can call the
 /// functions defined by PololuSH1106Base to write to the OLED.
-class PololuSH1106Generic : public PololuSH1106Base<PololuSH1106GenericCore>
+class PololuSH1106 : public PololuSH1106Base<PololuSH1106Core>
 {
 public:
+  // TODO: replace all these wrappers and the verbose comment above with a
+  // simple constructor, just like PololuHD44780
+
   // @brief Sets the pin to use to control the SH1106 RES (reset) pin.
   //
   // If you are not using the RST pin, you can just avoid calling this, or

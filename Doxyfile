@@ -1,5 +1,5 @@
 # Doxygen configuration file for generating documentation.
-PROJECT_NAME = "PololuOLED library"
+PROJECT_NAME = "PololuSH1106 library"
 OUTPUT_DIRECTORY = docs
 INLINE_INHERITED_MEMB = YES
 INPUT = .

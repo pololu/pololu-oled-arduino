@@ -11,9 +11,9 @@
 // This sketch should display two increasing numbers on your
 // OLED.
 
-#include <PololuOLED.h>
+#include <PololuSH1106.h>
 
-PololuSH1106Generic display;
+PololuSH1106 display;
 
 uint32_t count = 0;
 

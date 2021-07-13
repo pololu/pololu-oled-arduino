@@ -15,7 +15,7 @@ OLED display;
 #endif
 
 #ifdef USE_GENERIC
-PololuSH1106Generic display;
+PololuSH1106 display;
 #endif
 
 uint32_t startTime;

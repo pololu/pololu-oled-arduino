@@ -3,15 +3,13 @@
 #pragma once
 
 #include <Arduino.h>
-#include <avr/pgmspace.h>
-#include <string.h>
 
 /// The array is defined using the "weak" attribute, which means
 /// you can supply a definition in your own program if you want to override
 /// the default font.
-extern const uint8_t pololuOledFont[][5] PROGMEM;
+extern const uint8_t pololuSH1106Font[][5] PROGMEM;
 
-namespace PololuOLED {
+namespace PololuSH1106Helpers {
 
 static const uint8_t repeatBitsTable[16] PROGMEM = {
   0b00000000,
@@ -32,12 +30,9 @@ static const uint8_t repeatBitsTable[16] PROGMEM = {
   0b11111111
 };
 
-static uint8_t repeatBits(uint8_t d)
+static inline uint8_t repeatBits(uint8_t d)
 {
   return pgm_read_byte(repeatBitsTable + d);
 }
 
 }
-
-#include "PololuSH1106Base.h"
-#include "PololuSH1106Generic.h"
