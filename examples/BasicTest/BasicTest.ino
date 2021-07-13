@@ -1,11 +1,12 @@
 // This sketch is a basic test of the PololuSH1106Generic class.
 //
 // You will need to modify the pin numbers in setup() to match
-// how the SH1106 is connected to the Arduino.  If you are
-// using 3-wire SPI (no DC pin), then comment out the call to
-// setDcPin.  If you are not using the CS pin, comment out the
-// call to setCsPin (but make sure you are pulling it low some
-// other way).
+// how the SH1106 is connected to the Arduino.  If you are not
+// using the RST pin, then comment out the call to setRstPin.
+// If you are using 3-wire SPI (no DC pin), then comment out the
+// call to setDcPin.  If you are not using the CS pin, comment
+// out the call to setCsPin (but make sure you are pulling it
+// low some other way).
 //
 // This sketch should display two increasing numbers on your
 // OLED.

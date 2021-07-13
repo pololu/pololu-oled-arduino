@@ -26,6 +26,9 @@ class PololuSH1106GenericCore
 {
 public:
   // @brief Sets the pin to use to control the SH1106 RES (reset) pin.
+  //
+  // If you are not using the RST pin, you can just avoid calling this, or
+  // supply an argument of 255.
   void setRstPin(uint8_t pin) { rstPin = pin; }
 
   // @brief Sets the pin to use to control the SH1106 CLK/SCL/D0 (clock input)
@@ -55,7 +58,7 @@ public:
   // properly.
   void initPins()
   {
-    pinMode(rstPin, OUTPUT);
+    if (rstPin != 255) { pinMode(rstPin, OUTPUT); }
     pinMode(clkPin, OUTPUT);
     digitalWrite(clkPin, LOW);
     pinMode(mosiPin, OUTPUT);
@@ -66,6 +69,7 @@ public:
   // @brief This function is called by PololuSH1106Base to reset the SH1106.
   void reset()
   {
+    if (rstPin == 255) { return; }
     digitalWrite(rstPin, LOW);
     delayMicroseconds(10);
     digitalWrite(rstPin, HIGH);
@@ -151,7 +155,7 @@ public:
   }
 
 private:
-  uint8_t rstPin = 13, mosiPin = 13, clkPin = 13, dcPin = 255, csPin = 255;
+  uint8_t rstPin = 255, mosiPin = 13, clkPin = 13, dcPin = 255, csPin = 255;
   bool dataMode;
 };
 
@@ -165,7 +169,7 @@ private:
 /// The first thing you should do with objects of this class is to call
 /// the following functions to configure which pins you are using to
 /// control the SH1106:
-/// - setRstPin() (required)
+/// - setRstPin() (optional)
 /// - setClkPin() (required)
 /// - setMosiPin() (required)
 /// - setDcPin() (optional)
@@ -177,6 +181,9 @@ class PololuSH1106Generic : public PololuSH1106Base<PololuSH1106GenericCore>
 {
 public:
   // @brief Sets the pin to use to control the SH1106 RES (reset) pin.
+  //
+  // If you are not using the RST pin, you can just avoid calling this, or
+  // supply an argument of 255.
   void setRstPin(uint8_t pin) { core.setRstPin(pin); }
 
   // @brief Sets the pin to use to control the SH1106 CLK/SCL/D0 (clock input)
