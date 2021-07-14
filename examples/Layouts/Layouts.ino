@@ -1,0 +1,69 @@
+// This sketch shows all the layouts provided by the library.
+
+#include <Pololu3piPlus32U4.h>
+
+using namespace Pololu3piPlus32U4;
+
+PololuSH1106 display(1, 30, 0, 17, 13);
+
+uint8_t graphics[8 * 128];
+
+void drawGraphics()
+{
+  for (uint8_t i = 0; i < 8; i++)
+  {
+    // Solid diagaonal line on the left side.
+    graphics[i * 128 + i] = 0xFF;
+
+    // Dotted diagonal line left of center.
+    graphics[i * 128 + 32 + i] = 0xAA;
+
+    // Dotted diagonal line right of center.
+    graphics[i * 128 + (104 - i)] = 0x55;
+
+    // Solid diagonal line on the right side.
+    graphics[i * 128 + (127 - i)] = 0xFF;
+  }
+
+  // Solid bar in the center
+  for (uint8_t i = 1; i < 7; i++)
+  {
+    for (uint8_t x = 56; x < 72; x++)
+    {
+      graphics[i * 128 + x] = 0xFF;
+    }
+  }
+
+  // Lower corners
+  graphics[7 * 128 + 0] |= 0x80;
+  graphics[7 * 128 + 127] |= 0x80;
+}
+
+void setup()
+{
+  drawGraphics();
+
+  memset(display.getLinePointer(0), '0', 20);
+  memset(display.getLinePointer(1), '1', 20);
+  memset(display.getLinePointer(2), '2', 20);
+  memset(display.getLinePointer(3), '3', 20);
+}
+
+void loop()
+{
+  display.setLayout8x2();  // the default
+  display.display();
+  delay(2000);
+
+  display.setLayout8x2WithGraphics(graphics);
+  display.display();
+  delay(2000);
+
+  display.setLayout10x4();
+  display.display();
+  delay(2000);
+
+  display.setLayout10x4WithGraphics(graphics);
+  display.display();
+  delay(2000);
+}

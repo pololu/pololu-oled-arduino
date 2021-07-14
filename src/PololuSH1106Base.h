@@ -269,6 +269,29 @@ public:
     clearDisplayRamOnNextDisplay = true;
   }
 
+  /// @brief Configures this library to use a layout with
+  /// 10 columns and 4 rows of text.
+  void setLayout10x4()
+  {
+    graphicsBuffer = nullptr;
+    displayFunction = &PololuSH1106Base::display10x4Text;
+    displayPartialFunction = &PololuSH1106Base::display10x4TextPartial;
+    clearDisplayRamOnNextDisplay = true;
+  }
+
+  /// @brief Configures this library to use a layout with 10 columns and
+  /// 4 rows of text, XORed with a graphics buffer.
+  ///
+  /// @param graphics A pointer to a 1024-byte graphics buffer in RAM.
+  void setLayout10x4WithGraphics(const uint8_t * graphics)
+  {
+    graphicsBuffer = graphics;
+    displayFunction = &PololuSH1106Base::display10x4TextAndGraphics;
+    displayPartialFunction = &PololuSH1106Base::display10x4TextAndGraphicsPartial;
+    clearDisplayRamOnNextDisplay = true;
+  }
+
+
   // TODO: add some layouts that allow for more text
 
   //////// Display routines
@@ -449,11 +472,10 @@ private:
     for (uint8_t i = 0; i < rightMargin; i++) { core.sh1106Write(*g++); }
   }
 
-
   // 8x2 layout:
   //   Character size:               10x16
   //   Character horizontal margin:  2
-  //   Left and right margins:       (128 - 10*8 - 2*7)/2 = 17
+  //   Left margins:                 (128 - 8*10 - 7*2)/2 = 17
   //   Line 0:                       pages 2 and 3
   //   Line 1:                       pages 5 and 6
   void display8x2TextPartial(uint8_t x, uint8_t y, uint8_t width)
@@ -464,21 +486,21 @@ private:
 
     const uint8_t page = 2 + y * 3;
     const uint8_t columnAddr = 2 + 17 + x * 12;
-    const uint8_t * const textStart = getLinePointer(y) + x;
+    const uint8_t * const text = getLinePointer(y) + x;
 
     core.sh1106TransferStart();
-    writeSegmentUpperText(page, columnAddr, textStart, width);
-    writeSegmentLowerText(page + 1, columnAddr, textStart, width);
+    writeSegmentUpperText(page, columnAddr, text, width);
+    writeSegmentLowerText(page + 1, columnAddr, text, width);
     core.sh1106TransferEnd();
   }
 
   void display8x2Text()
   {
     core.sh1106TransferStart();
-    writeSegmentUpperText(2, 19, getLinePointer(0), 8);
-    writeSegmentLowerText(3, 19, getLinePointer(0), 8);
-    writeSegmentUpperText(5, 19, getLinePointer(1), 8);
-    writeSegmentLowerText(6, 19, getLinePointer(1), 8);
+    writeSegmentUpperText(2, 2 + 17, getLinePointer(0), 8);
+    writeSegmentLowerText(3, 2 + 17, getLinePointer(0), 8);
+    writeSegmentUpperText(5, 2 + 17, getLinePointer(1), 8);
+    writeSegmentLowerText(6, 2 + 17, getLinePointer(1), 8);
     core.sh1106TransferEnd();
   }
 
@@ -490,11 +512,11 @@ private:
 
     const uint8_t page = 2 + y * 3;
     const uint8_t columnAddr = 2 + 17 + x * 12;
-    uint8_t * const textStart = getLinePointer(y) + x;
+    uint8_t * const text = getLinePointer(y) + x;
 
     core.sh1106TransferStart();
-    writeSegmentUpperTextAndGraphics(page, columnAddr, textStart, width);
-    writeSegmentLowerTextAndGraphics(page + 1, columnAddr, textStart, width);
+    writeSegmentUpperTextAndGraphics(page, columnAddr, text, width);
+    writeSegmentLowerTextAndGraphics(page + 1, columnAddr, text, width);
     core.sh1106TransferEnd();
   }
 
@@ -509,6 +531,74 @@ private:
     writePageUpperTextAndGraphics(5, getLinePointer(1), 17, 8, 15);
     writePageLowerTextAndGraphics(6, getLinePointer(1), 17, 8, 15);
     writePageGraphics(7);
+    core.sh1106TransferEnd();
+  }
+
+  // 10x4 layout:
+  //   Character size:               10x16
+  //   Character horizontal margin:  2
+  //   Left margin:                  (128 - 10*10 - 9*2)/2 = 5
+  //   Line 0:                       pages 0 and 1
+  //   Line 1:                       pages 2 and 3
+  //   Line 3:                       pages 4 and 5
+  //   Line 4:                       pages 6 and 7
+  void display10x4TextPartial(uint8_t x, uint8_t y, uint8_t width)
+  {
+    if (x >= 10 || y >= 4) { return; }
+    if (width > (uint8_t)(10 - x)) { width = 10 - x; }
+    if (width == 0) { return; }
+
+    const uint8_t page = y * 2;
+    const uint8_t columnAddr = 2 + 5 + x * 12;
+    const uint8_t * const textStart = getLinePointer(y) + x;
+
+    core.sh1106TransferStart();
+    writeSegmentUpperText(page, columnAddr, textStart, width);
+    writeSegmentLowerText(page + 1, columnAddr, textStart, width);
+    core.sh1106TransferEnd();
+  }
+
+  void display10x4Text()
+  {
+    core.sh1106TransferStart();
+    writeSegmentUpperText(0, 2 + 5, getLinePointer(0), 10);
+    writeSegmentLowerText(1, 2 + 5, getLinePointer(0), 10);
+    writeSegmentUpperText(2, 2 + 5, getLinePointer(1), 10);
+    writeSegmentLowerText(3, 2 + 5, getLinePointer(1), 10);
+    writeSegmentUpperText(4, 2 + 5, getLinePointer(2), 10);
+    writeSegmentLowerText(5, 2 + 5, getLinePointer(2), 10);
+    writeSegmentUpperText(6, 2 + 5, getLinePointer(3), 10);
+    writeSegmentLowerText(7, 2 + 5, getLinePointer(3), 10);
+    core.sh1106TransferEnd();
+  }
+
+  void display10x4TextAndGraphicsPartial(uint8_t x, uint8_t y, uint8_t width)
+  {
+    if (x >= 10 || y >= 4) { return; }
+    if (width > (uint8_t)(10 - x)) { width = 10 - x; }
+    if (width == 0) { return; }
+
+    const uint8_t page = y * 2;
+    const uint8_t columnAddr = 2 + 5 + x * 12;
+    uint8_t * const text = getLinePointer(y) + x;
+
+    core.sh1106TransferStart();
+    writeSegmentUpperTextAndGraphics(page, columnAddr, text, width);
+    writeSegmentLowerTextAndGraphics(page + 1, columnAddr, text, width);
+    core.sh1106TransferEnd();
+  }
+
+  void display10x4TextAndGraphics()
+  {
+    core.sh1106TransferStart();
+    writePageUpperTextAndGraphics(0, getLinePointer(0), 5, 10, 3);
+    writePageLowerTextAndGraphics(1, getLinePointer(0), 5, 10, 3);
+    writePageUpperTextAndGraphics(2, getLinePointer(1), 5, 10, 3);
+    writePageLowerTextAndGraphics(3, getLinePointer(1), 5, 10, 3);
+    writePageUpperTextAndGraphics(4, getLinePointer(2), 5, 10, 3);
+    writePageLowerTextAndGraphics(5, getLinePointer(2), 5, 10, 3);
+    writePageUpperTextAndGraphics(6, getLinePointer(3), 5, 10, 3);
+    writePageLowerTextAndGraphics(7, getLinePointer(3), 5, 10, 3);
     core.sh1106TransferEnd();
   }
 

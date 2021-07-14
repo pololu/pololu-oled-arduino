@@ -1,4 +1,5 @@
-// Sketch to help test the speed of the OLED update routines.
+// Sketch to help test the speed and function of the OLED display
+// routines.
 
 #include <PololuOLED.h>
 
@@ -117,6 +118,10 @@ void loop()
   display.print(F("\6 P1   \7"));
   display.gotoXY(0, 1);
   display.print(F("\6 P2   \7"));
+  display.gotoXY(0, 2);
+  display.print(F("01234567890123456789"));
+  display.gotoXY(0, 3);
+  display.print(F("ABCDEFGHIJKLMNOPQRST"));
   benchmarkStart();
   display.display();
   benchmarkEnd();
@@ -153,6 +158,34 @@ void loop()
   display.print("\6 P6   \7");
   benchmarkEnd();
   benchmarkReport(F("8x2+graphics, partial update, 8 chars"));
+
+  display.setLayout10x4();
+  display.display(); // first display takes extra time clearing RAM
+
+  benchmarkStart();
+  display.display();
+  benchmarkEnd();
+  benchmarkReport(F("10x4, full update"));
+
+  display.gotoXY(0, 0);
+  benchmarkStart();
+  display.print("\6 P7   \7");
+  benchmarkEnd();
+  benchmarkReport(F("10x4, partial update, 8 chars"));
+
+  display.setLayout10x4WithGraphics(graphics);
+  display.display(); // first display takes extra time clearing RAM
+
+  benchmarkStart();
+  display.display();
+  benchmarkEnd();
+  benchmarkReport(F("10x4+graphics, full update"));
+
+  display.gotoXY(0, 1);
+  benchmarkStart();
+  display.print("\6 P8   \7");
+  benchmarkEnd();
+  benchmarkReport(F("10x4+graphics, partial update, 8 chars"));
 
   Serial.println();
 
