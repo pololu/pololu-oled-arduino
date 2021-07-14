@@ -1,4 +1,4 @@
-# Pololu SH1106 OLED library for Arduino
+# Pololu OLED library for Arduino
 
 ## Summary
 
@@ -60,17 +60,17 @@ for other purposes while you are not updated the OLED.
 You can install this library using the Arduino library manager:
 
 1. In the Arduino IDE, open the "Tools" menu and select "Manage Libraries...".
-2. Search for "PololuSH1106".
-3. Click the PololuSH1106 entry in the list.
+2. Search for "PololuOLED".
+3. Click the PololuOLED entry in the list.
 4. Click "Install".
 
 If this does not work, you can manually install the library:
 
 1. Download the
-   [latest release archive from GitHub](https://github.com/pololu/pololu-sh1106-arduino/releases)
+   [latest release archive from GitHub](https://github.com/pololu/pololu-oled-arduino/releases)
    and decompress it.
-2. Rename the folder "pololu-sh1106-arduino-xxxx" to "PololuSH1106".
-3. Drag the "PololuSH1106" folder into the "libraries" directory inside your
+2. Rename the folder "pololu-oled-arduino-xxxx" to "PololuOLED".
+3. Drag the "PololuOLED" folder into the "libraries" directory inside your
    Arduino sketchbook directory. You can view your sketchbook location by
    opening the "File" menu and selecting "Preferences" in the Arduino IDE. If
    there is not already a "libraries" folder in that location, you should make

@@ -1,13 +1,13 @@
-#include <PololuSH1106Helpers.h>
+#include <PololuOLED.h>
 
 // Note: This font is defined with the weak attribute, so if you want to
 // override it you don't need to edit this file.  You can copy this file into
-// your project, remove "__attribute__((weak))", and then make any changes
-// you want.
+// your sketch directory, remove "__attribute__((weak))", and then make any
+// changes you want.
 //
 // Note: Any character defined here as "{ 0, 0, 0, 0, 0 }" is reserved for
 // future use; we might add a symbol there in later versions of this library.
-extern const uint8_t pololuSH1106Font[224][5] PROGMEM __attribute__((weak)) = {
+extern const uint8_t pololuOledFont[224][5] PROGMEM __attribute__((weak)) = {
   // First 32 characters omitted because they are custom or blank.
 
   // 0x20 space

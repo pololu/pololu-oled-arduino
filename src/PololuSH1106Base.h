@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "PololuSH1106Helpers.h"
+#include "PololuOLEDHelpers.h"
 
 #define SH1106_SET_COLUMN_ADDR_LOW 0x00
 #define SH1106_SET_COLUMN_ADDR_HIGH 0x10
@@ -59,15 +59,14 @@
 ///
 /// Characters 8 through 31 are hardcoded to be blank.
 ///
-/// Characters 32 through 255 come from pololuSH1106Font.
+/// Characters 32 through 255 come from pololuOledFont.
 /// It is defined with the "weak" attribute, so you can define your own version
 /// of the font if you want to modify the characters.  You can also save some
 /// program space by defining your own font which does not contain as many
 /// characters.
 ///
-/// To override the font, simply copy the contents of oled_font.cpp
-/// into your sketch, remove `__attribute__((weak))`, and then make your
-/// changes.
+/// To override the font, simply copy the file font.cpp into your sketch,
+/// remove `__attribute__((weak))`, and then make your changes.
 ///
 /// @section graphics-buffer Graphics buffer
 ///
@@ -283,7 +282,7 @@ private:
   {
     if (glyph >= 0x20)
     {
-      return pgm_read_byte(&pololuSH1106Font[glyph - 0x20][pixelX]);
+      return pgm_read_byte(&pololuOledFont[glyph - 0x20][pixelX]);
     }
     else if (glyph < 8)
     {
@@ -337,7 +336,7 @@ private:
       uint8_t glyph = *t++;
       for (uint8_t pixelX = 0; pixelX < 5; pixelX++)
       {
-        uint8_t column = PololuSH1106Helpers::repeatBits(
+        uint8_t column = PololuOLEDHelpers::repeatBits(
           getGlyphColumn(glyph, pixelX) & 0xF);
         core.sh1106Write(column);
         core.sh1106Write(column);
@@ -358,7 +357,7 @@ private:
       uint8_t glyph = *t++;
       for (uint8_t pixelX = 0; pixelX < 5; pixelX++)
       {
-        uint8_t column = PololuSH1106Helpers::repeatBits(
+        uint8_t column = PololuOLEDHelpers::repeatBits(
           getGlyphColumn(glyph, pixelX) >> 4);
         core.sh1106Write(column);
         core.sh1106Write(column);
@@ -402,7 +401,7 @@ private:
       uint8_t glyph = *t++;
       for (uint8_t pixelX = 0; pixelX < 5; pixelX++)
       {
-        uint8_t column = PololuSH1106Helpers::repeatBits(
+        uint8_t column = PololuOLEDHelpers::repeatBits(
           getGlyphColumn(glyph, pixelX) & 0xF);
         core.sh1106Write(column ^ *g++);
         core.sh1106Write(column ^ *g++);
@@ -424,7 +423,7 @@ private:
       uint8_t glyph = *t++;
       for (uint8_t pixelX = 0; pixelX < 5; pixelX++)
       {
-        uint8_t column = PololuSH1106Helpers::repeatBits(
+        uint8_t column = PololuOLEDHelpers::repeatBits(
           getGlyphColumn(glyph, pixelX) >> 4);
         core.sh1106Write(column ^ *g++);
         core.sh1106Write(column ^ *g++);
@@ -460,7 +459,7 @@ private:
       uint8_t glyph = *t++;
       for (uint8_t pixelX = 0; pixelX < 5; pixelX++)
       {
-        uint8_t column = PololuSH1106Helpers::repeatBits(
+        uint8_t column = PololuOLEDHelpers::repeatBits(
           getGlyphColumn(glyph, pixelX) & 0xF);
         core.sh1106Write(column ^ *g++);
         core.sh1106Write(column ^ *g++);
@@ -482,7 +481,7 @@ private:
       uint8_t glyph = *t++;
       for (uint8_t pixelX = 0; pixelX < 5; pixelX++)
       {
-        uint8_t column = PololuSH1106Helpers::repeatBits(
+        uint8_t column = PololuOLEDHelpers::repeatBits(
           getGlyphColumn(glyph, pixelX) >> 4);
         core.sh1106Write(column ^ *g++);
         core.sh1106Write(column ^ *g++);
@@ -507,7 +506,7 @@ private:
       uint8_t glyph = *t++;
       for (uint8_t pixelX = 0; pixelX < 5; pixelX++)
       {
-        uint8_t column = PololuSH1106Helpers::repeatBits(
+        uint8_t column = PololuOLEDHelpers::repeatBits(
           getGlyphColumn(glyph, pixelX) & 0xF);
         core.sh1106Write(column ^ *g++);
         core.sh1106Write(column ^ *g++);
@@ -529,7 +528,7 @@ private:
       uint8_t glyph = *t++;
       for (uint8_t pixelX = 0; pixelX < 5; pixelX++)
       {
-        uint8_t column = PololuSH1106Helpers::repeatBits(
+        uint8_t column = PololuOLEDHelpers::repeatBits(
           getGlyphColumn(glyph, pixelX) >> 4);
         core.sh1106Write(column ^ *g++);
         core.sh1106Write(column ^ *g++);

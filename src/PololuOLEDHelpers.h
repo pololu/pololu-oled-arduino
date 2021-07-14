@@ -7,9 +7,9 @@
 /// The array is defined using the "weak" attribute, which means
 /// you can supply a definition in your own program if you want to override
 /// the default font.
-extern const uint8_t pololuSH1106Font[][5] PROGMEM;
+extern const uint8_t pololuOledFont[][5] PROGMEM;
 
-namespace PololuSH1106Helpers {
+namespace PololuOLEDHelpers {
 
 static const uint8_t repeatBitsTable[16] PROGMEM = {
   0b00000000,
