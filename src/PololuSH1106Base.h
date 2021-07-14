@@ -31,7 +31,7 @@
 /// - void sh1106DataMode();
 /// - void sh1106Write(uint8_t);
 ///
-/// For an example implementation of a core class, see PololuSH1106GenericCore.
+/// For an example implementation of a core class, see PololuSH1106Core.
 ///
 /// @section text-buffer Text buffer
 ///
@@ -65,8 +65,8 @@
 /// program space by defining your own font which does not contain as many
 /// characters.
 ///
-/// To override the font, simply copy the file font.cpp into your sketch,
-/// remove `__attribute__((weak))`, and then make your changes.
+/// To override the font, simply copy the file font.cpp into your sketch
+/// directory, remove `__attribute__((weak))`, and then make your changes.
 ///
 /// @section graphics-buffer Graphics buffer
 ///
@@ -208,10 +208,7 @@ public:
     core.sh1106TransferEnd();
   }
 
-  /// @brief Configures the OLED to rotate the its display 180 degrees from normal.
-  ///
-  /// This results in text that is upside down when compared to the labels on
-  /// the 3pi+ 32U4 board.
+  /// @brief Configures the OLED to rotate its display 180 degrees from normal.
   void rotate180()
   {
     init();
@@ -224,8 +221,8 @@ public:
 
   /// @brief Configures the OLED to use the default orientation.
   ///
-  /// This results in text that has the same orientation as the labels on the
-  /// 3pi+ 32U4 board.
+  /// This is not the orientation that the SH1106 uses by default after being
+  /// reset, but it is the default orientation used by this lirbary.
   void noRotate()
   {
     init();

@@ -15,50 +15,34 @@
 /// 16 MHz, updating the full screen takes about 110 ms.  You can speed this up
 /// by about 15 times by using an optimized class that directly writes to
 /// specific I/O registers instead of using this class.
-///
-/// This class has several functions for configuring which pins to use, and
-/// those functions should be called at the beginning of your program before
-/// any functions that use the pins.
 class PololuSH1106Core
 {
 public:
-  // @brief Sets the pin to use to control the SH1106 RES (reset) pin.
-  //
-  // If you are not using the RST pin, you can just avoid calling this, or
-  // supply an argument of 255.
-  void setRstPin(uint8_t pin) { rstPin = pin; }
-
-  // @brief Sets the pin to use to control the SH1106 CLK/SCL/D0 (clock input)
-  // pin.
-  void setClkPin(uint8_t pin) { clkPin = pin; }
-
-  // @brief Sets the pin to use to control the SH1106 MOSI/MOS/SI/D1
-  // (data input) pin.
-  void setMosiPin(uint8_t pin) { mosiPin = pin; }
-
-  // @brief Sets the pin to use to control the SH1106 DC/A0
-  // (data mode / not command mode) pin.
-  //
-  // If you are using 3-wire SPI mode so there is no DC pin to control, you can
-  // just avoid calling this, or supply an argument of 255.
-  void setDcPin(uint8_t pin) { dcPin = pin; }
-
-  // @brief Sets the pin to use to control the SH1106 CS (chip select) pin.
-  //
-  // If there is no CS pin, you can just avoid calling this, or supply
-  // an argument of 255.  You should ensure the CS pin of the OLED is driven
-  // low at all times, or at least when you are communicating with it.
-  void setCsPin(uint8_t pin) { csPin = pin; }
+  /// @brief Configures what pins this class will use.
+  ///
+  /// This function should be called at the beginning of your program
+  /// before any functions that use the pins.
+  ///
+  /// For documention of each parameter, see PololuSH1106::PololuSH1106().
+  void setPins(uint8_t clk, uint8_t mos, uint8_t res = 255, uint8_t dc = 255,
+    uint8_t cs = 255)
+  {
+    clkPin = clk;
+    mosPin = mos;
+    resPin = res;
+    dcPin = dc;
+    csPin = cs;
+  }
 
   // @brief This function is called by PololuSH1106Base to perform any
   // initializations that might be needed for the other functions to work
   // properly.
   void initPins()
   {
-    if (rstPin != 255) { pinMode(rstPin, OUTPUT); }
+    if (resPin != 255) { pinMode(resPin, OUTPUT); }
     pinMode(clkPin, OUTPUT);
     digitalWrite(clkPin, LOW);
-    pinMode(mosiPin, OUTPUT);
+    pinMode(mosPin, OUTPUT);
     if (dcPin != 255) { pinMode(dcPin, OUTPUT); }
     if (csPin != 255) { pinMode(csPin, OUTPUT); }
   }
@@ -66,10 +50,10 @@ public:
   // @brief This function is called by PololuSH1106Base to reset the SH1106.
   void reset()
   {
-    if (rstPin == 255) { return; }
-    digitalWrite(rstPin, LOW);
+    if (resPin == 255) { return; }
+    digitalWrite(resPin, LOW);
     delayMicroseconds(10);
-    digitalWrite(rstPin, HIGH);
+    digitalWrite(resPin, HIGH);
     delayMicroseconds(10);
   }
 
@@ -83,7 +67,7 @@ public:
   {
     pinMode(clkPin, OUTPUT);
     digitalWrite(clkPin, LOW);
-    pinMode(mosiPin, OUTPUT);
+    pinMode(mosPin, OUTPUT);
     if (csPin != 255) { digitalWrite(csPin, LOW); }
   }
 
@@ -117,97 +101,73 @@ public:
     if (dcPin == 255)
     {
       digitalWrite(clkPin, LOW);
-      digitalWrite(mosiPin, dataMode);
+      digitalWrite(mosPin, dataMode);
       digitalWrite(clkPin, HIGH);
     }
 
     digitalWrite(clkPin, LOW);
-    digitalWrite(mosiPin, d >> 7 & 1);
+    digitalWrite(mosPin, d >> 7 & 1);
     digitalWrite(clkPin, HIGH);
 
     digitalWrite(clkPin, LOW);
-    digitalWrite(mosiPin, d >> 6 & 1);
+    digitalWrite(mosPin, d >> 6 & 1);
     digitalWrite(clkPin, HIGH);
 
     digitalWrite(clkPin, LOW);
-    digitalWrite(mosiPin, d >> 5 & 1);
+    digitalWrite(mosPin, d >> 5 & 1);
     digitalWrite(clkPin, HIGH);
 
     digitalWrite(clkPin, LOW);
-    digitalWrite(mosiPin, d >> 4 & 1);
+    digitalWrite(mosPin, d >> 4 & 1);
     digitalWrite(clkPin, HIGH);
 
     digitalWrite(clkPin, LOW);
-    digitalWrite(mosiPin, d >> 3 & 1);
+    digitalWrite(mosPin, d >> 3 & 1);
     digitalWrite(clkPin, HIGH);
 
     digitalWrite(clkPin, LOW);
-    digitalWrite(mosiPin, d >> 2 & 1);
+    digitalWrite(mosPin, d >> 2 & 1);
     digitalWrite(clkPin, HIGH);
 
     digitalWrite(clkPin, LOW);
-    digitalWrite(mosiPin, d >> 1 & 1);
+    digitalWrite(mosPin, d >> 1 & 1);
     digitalWrite(clkPin, HIGH);
 
     digitalWrite(clkPin, LOW);
-    digitalWrite(mosiPin, d >> 0 & 1);
+    digitalWrite(mosPin, d >> 0 & 1);
     digitalWrite(clkPin, HIGH);
   }
 
 private:
-  uint8_t rstPin = 255, mosiPin = 13, clkPin = 13, dcPin = 255, csPin = 255;
+  uint8_t clkPin = 13, mosPin = 13, resPin = 255, dcPin = 255, csPin = 255;
   bool dataMode;
 };
 
-
-/// @brief SH1106 class implemented using Arduino I/O functions.
-///
-/// This uses PololUSH1106Base and PololuSH1106Core to provide a
-/// complete class that can be used to draw text or graphics on an SH1106
-/// connected via SPI.
-///
-/// The first thing you should do with objects of this class is to call
-/// the following functions to configure which pins you are using to
-/// control the SH1106:
-/// - setRstPin() (optional)
-/// - setClkPin() (required)
-/// - setMosiPin() (required)
-/// - setDcPin() (optional)
-/// - setCsPin() (optional)
-///
-/// After specifying your pins by callin those functions, you can call the
-/// functions defined by PololuSH1106Base to write to the OLED.
+/// @brief Generic SH1106 class implemented using Arduino I/O functions.
 class PololuSH1106 : public PololuSH1106Base<PololuSH1106Core>
 {
 public:
-  // TODO: replace all these wrappers and the verbose comment above with a
-  // simple constructor, just like PololuHD44780
-
-  // @brief Sets the pin to use to control the SH1106 RES (reset) pin.
-  //
-  // If you are not using the RST pin, you can just avoid calling this, or
-  // supply an argument of 255.
-  void setRstPin(uint8_t pin) { core.setRstPin(pin); }
-
-  // @brief Sets the pin to use to control the SH1106 CLK/SCL/D0 (clock input)
-  // pin.
-  void setClkPin(uint8_t pin) { core.setClkPin(pin); }
-
-  // @brief Sets the pin to use to control the
-  // SH1106 MOSI/MOS/SI/D1 (data input) pin.
-  void setMosiPin(uint8_t pin) { core.setMosiPin(pin); }
-
-  // @brief Sets the pin to use to control the SH1106 DC/A0
-  // (data mode / not command mode) pin.
-  //
-  // If you are using 3-wire SPI mode so there is no DC pin to control, you can
-  // just avoid calling this, or supply an argument of 255.
-  void setDcPin(uint8_t pin) { core.setDcPin(pin); }
-
-  // @brief Sets the pin to use to control the SH1106 CS (chip select) pin.
-  //
-  // If there is no CS pin, you can just avoid calling this, or supply
-  // an argument of 255.  You should ensure the CS pin of the OLED is driven
-  // low at all times, or at least when you are communicating with it.
-  void setCsPin(uint8_t pin) { core.setCsPin(pin); }
+  /// @brief Creates a new instanace of PololuSH1106.
+  ///
+  /// @param clk The pin number to use to control the
+  ///   SH1106 CLK/SCL/D0 (clock input) pin.
+  /// @param mos The pin number to use to control the
+  ///   SH1106 MOS/MOSI/SI/D1 (data input) pin.
+  /// @param res The pin to use to control the
+  ///   SH1106 RES (reset) pin.
+  ///   If you are not using the RST pin, you can pass 255.
+  /// @param dc The pin to use to control the
+  ///   SH1106 DC/A0 (data mode / not command mode) pin.
+  ///   If your display module uses 3-wire SPI mode so there is no DC pin to
+  ///   control, you should pass 255.
+  /// @param cs  Sets the pin to use to control the
+  ///   SH1106 CS (chip select) pin.
+  ///   If you are not using the CS pin, you can pass 255.
+  ///   In that case, you should ensure the SH1106's CS pin is driven low when
+  ///   you are communicating with it.
+  PololuSH1106(uint8_t clk, uint8_t mos, uint8_t res = 255, uint8_t dc = 255,
+    uint8_t cs = 255)
+  {
+    core.setPins(clk, mos, res, dc, cs);
+  }
 };

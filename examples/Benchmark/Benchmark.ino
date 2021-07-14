@@ -15,7 +15,7 @@ OLED display;
 #endif
 
 #ifdef USE_GENERIC
-PololuSH1106 display;
+PololuSH1106 display(1, 30, 0, 17, 13);
 #endif
 
 uint32_t startTime;
@@ -78,13 +78,6 @@ void drawGraphics()
 
 void setup()
 {
-#ifdef USE_GENERIC
-  display.setRstPin(0);
-  display.setClkPin(1);
-  display.setMosiPin(30);
-  display.setDcPin(17);
-  display.setCsPin(13);
-#endif
 
   drawGraphics();
   display.loadCustomCharacter(clockwiseChar, 6);

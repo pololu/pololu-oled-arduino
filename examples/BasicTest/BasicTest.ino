@@ -1,29 +1,19 @@
-// This sketch is a basic test of the PololuSH1106Generic class.
+// This sketch is a basic test of the PololuSH1106 class.
 //
-// You will need to modify the pin numbers in setup() to match
-// how the SH1106 is connected to the Arduino.  If you are not
-// using the RST pin, then comment out the call to setRstPin.
-// If you are using 3-wire SPI (no DC pin), then comment out the
-// call to setDcPin.  If you are not using the CS pin, comment
-// out the call to setCsPin (but make sure you are pulling it
-// low some other way).
-//
-// This sketch should display two increasing numbers on your
-// OLED.
+// It should display two increasing numbers on your OLED.
 
 #include <PololuOLED.h>
 
-PololuSH1106 display;
+// You will need to modify the pin numbers on the line below
+// to indicate what Arduino pins to use to control the display.
+// The pins are specified in this order: CLK, MOS, RES, DC, CS.
+// Pass 255 for RES, DC, or CS if you are not using them.
+PololuSH1106 display(1, 30, 0, 17, 13);
 
 uint32_t count = 0;
 
 void setup()
 {
-  display.setRstPin(0);
-  display.setClkPin(1);
-  display.setMosiPin(30);
-  display.setDcPin(17);
-  display.setCsPin(13);
   delay(1000);
 }
 

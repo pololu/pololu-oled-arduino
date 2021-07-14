@@ -77,10 +77,42 @@ If this does not work, you can manually install the library:
    the folder yourself.
 4. After installing the library, restart the Arduino IDE.
 
+### Examples
+
+Several example sketches are available that show how to use the library.
+You can access them from the Arduino IDE by opening the "File" menu, selecting
+"Examples", and then selecting "PololuOLED".  If you cannot find these
+examples, the library was probably installed incorrectly and you should
+retry the installation instructions above.
+
 
 ### Creating a PololuSH1106 object
 
-# TODO: finish this
+Unless you are using a library that creates an OLED object for you in some way,
+you will want to create a PololUSH1106 object that can be used to access your
+OLED.  To do so, add these lines near the top of your sketch:
+
+```c++
+#include <PololuOLED.h>
+PololuSH1106 display(7, 6, 5, 4, 3);
+```
+
+The numbers lsited above are the Arduino pin numbers that are controlling the
+OLED.  The pins are specified in this order: CLK, MOS, RES, DC, CS.
+Pass 255 for RES, DC, or CS if you are not using them.
+
+### Documentation
+
+For complete documentation of this library, see the
+https://pololu.github.io/pololu-oled-arduino.
+
+In particular the documentation of PololuSH1106Base.h gives a good overview of
+how the library works and lists all the functions you can call to display
+graphics or text.
+
+### Version history
+
+* 1.0.0: Original release.
 
 [3760]: https://www.pololu.com/product/3760
 
