@@ -19,6 +19,11 @@ PololuSH1106 display(1, 30, 0, 17, 13);
 // 0.)
 uint8_t graphics[8 * 128];
 
+void clearGraphics()
+{
+  memset(graphics, 0, sizeof(graphics));
+}
+
 void setPixel(uint8_t x, uint8_t y, bool value)
 {
   if (x >= 128 || y >= 64) { return; }
@@ -30,11 +35,6 @@ void setPixel(uint8_t x, uint8_t y, bool value)
   {
     graphics[x + (y >> 3) * 128] &= ~(1 << (y & 7));
   }
-}
-
-void clearGraphics()
-{
-  memset(graphics, 0, sizeof(graphics));
 }
 
 void drawRectangle(uint8_t topLeftX, uint8_t topLeftY,
