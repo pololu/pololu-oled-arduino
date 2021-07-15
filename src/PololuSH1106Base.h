@@ -439,7 +439,7 @@ private:
   }
 
   void writePageUpperTextAndGraphics(uint8_t page, const uint8_t * text,
-    uint8_t leftMargin, uint8_t textLength, uint8_t rightMargin)
+    uint8_t leftMargin, uint8_t textLength)
   {
     core.sh1106CommandMode();
     core.sh1106Write(SH1106_SET_PAGE_ADDR | page);
@@ -461,11 +461,14 @@ private:
        core.sh1106Write(*g++);
        core.sh1106Write(*g++);
     }
-    for (uint8_t i = 0; i < rightMargin - 2; i++) { core.sh1106Write(*g++); }
+    for (uint8_t x = leftMargin + textLength * 12; x < 128; x++)
+    {
+      core.sh1106Write(*g++);
+    }
   }
 
   void writePageLowerTextAndGraphics(uint8_t page, const uint8_t * text,
-    uint8_t leftMargin, uint8_t textLength, uint8_t rightMargin)
+    uint8_t leftMargin, uint8_t textLength)
   {
     core.sh1106CommandMode();
     core.sh1106Write(SH1106_SET_PAGE_ADDR | page);
@@ -487,7 +490,10 @@ private:
        core.sh1106Write(*g++);
        core.sh1106Write(*g++);
     }
-    for (uint8_t i = 0; i < rightMargin - 2; i++) { core.sh1106Write(*g++); }
+    for (uint8_t x = leftMargin + textLength * 12; x < 128; x++)
+    {
+      core.sh1106Write(*g++);
+    }
   }
 
   void writeSegmentText(uint8_t page, uint8_t columnAddr,
@@ -530,7 +536,7 @@ private:
   }
 
   void writePageTextAndGraphics(uint8_t page, const uint8_t * text,
-    uint8_t leftMargin, uint8_t textLength, uint8_t rightMargin)
+    uint8_t leftMargin, uint8_t textLength)
   {
     core.sh1106CommandMode();
     core.sh1106Write(SH1106_SET_PAGE_ADDR | page);
@@ -548,7 +554,10 @@ private:
        }
        core.sh1106Write(*g++);
     }
-    for (uint8_t i = 0; i < rightMargin - 1; i++) { core.sh1106Write(*g++); }
+    for (uint8_t x = leftMargin + textLength * 6; x < 128; x++)
+    {
+      core.sh1106Write(*g++);
+    }
   }
 
 
@@ -606,11 +615,11 @@ private:
     core.sh1106TransferStart();
     writePageGraphics(0);
     writePageGraphics(1);
-    writePageUpperTextAndGraphics(2, getLinePointer(0), 17, 8, 17);
-    writePageLowerTextAndGraphics(3, getLinePointer(0), 17, 8, 17);
+    writePageUpperTextAndGraphics(2, getLinePointer(0), 17, 8);
+    writePageLowerTextAndGraphics(3, getLinePointer(0), 17, 8);
     writePageGraphics(4);
-    writePageUpperTextAndGraphics(5, getLinePointer(1), 17, 8, 17);
-    writePageLowerTextAndGraphics(6, getLinePointer(1), 17, 8, 17);
+    writePageUpperTextAndGraphics(5, getLinePointer(1), 17, 8);
+    writePageLowerTextAndGraphics(6, getLinePointer(1), 17, 8);
     writePageGraphics(7);
     core.sh1106TransferEnd();
   }
@@ -674,14 +683,14 @@ private:
   void display10x4TextAndGraphics()
   {
     core.sh1106TransferStart();
-    writePageUpperTextAndGraphics(0, getLinePointer(0), 0, 10, 10);
-    writePageLowerTextAndGraphics(1, getLinePointer(0), 0, 10, 10);
-    writePageUpperTextAndGraphics(2, getLinePointer(1), 0, 10, 10);
-    writePageLowerTextAndGraphics(3, getLinePointer(1), 0, 10, 10);
-    writePageUpperTextAndGraphics(4, getLinePointer(2), 0, 10, 10);
-    writePageLowerTextAndGraphics(5, getLinePointer(2), 0, 10, 10);
-    writePageUpperTextAndGraphics(6, getLinePointer(3), 0, 10, 10);
-    writePageLowerTextAndGraphics(7, getLinePointer(3), 0, 10, 10);
+    writePageUpperTextAndGraphics(0, getLinePointer(0), 0, 10);
+    writePageLowerTextAndGraphics(1, getLinePointer(0), 0, 10);
+    writePageUpperTextAndGraphics(2, getLinePointer(1), 0, 10);
+    writePageLowerTextAndGraphics(3, getLinePointer(1), 0, 10);
+    writePageUpperTextAndGraphics(4, getLinePointer(2), 0, 10);
+    writePageLowerTextAndGraphics(5, getLinePointer(2), 0, 10);
+    writePageUpperTextAndGraphics(6, getLinePointer(3), 0, 10);
+    writePageLowerTextAndGraphics(7, getLinePointer(3), 0, 10);
     core.sh1106TransferEnd();
   }
 
@@ -737,14 +746,14 @@ private:
   void display21x8TextAndGraphics()
   {
     core.sh1106TransferStart();
-    writePageTextAndGraphics(0, getLinePointer(0), 0, 21, 3);
-    writePageTextAndGraphics(1, getLinePointer(1), 0, 21, 3);
-    writePageTextAndGraphics(2, getLinePointer(2), 0, 21, 3);
-    writePageTextAndGraphics(3, getLinePointer(3), 0, 21, 3);
-    writePageTextAndGraphics(4, getLinePointer(4), 0, 21, 3);
-    writePageTextAndGraphics(5, getLinePointer(5), 0, 21, 3);
-    writePageTextAndGraphics(6, getLinePointer(6), 0, 21, 3);
-    writePageTextAndGraphics(7, getLinePointer(7), 0, 21, 3);
+    writePageTextAndGraphics(0, getLinePointer(0), 0, 21);
+    writePageTextAndGraphics(1, getLinePointer(1), 0, 21);
+    writePageTextAndGraphics(2, getLinePointer(2), 0, 21);
+    writePageTextAndGraphics(3, getLinePointer(3), 0, 21);
+    writePageTextAndGraphics(4, getLinePointer(4), 0, 21);
+    writePageTextAndGraphics(5, getLinePointer(5), 0, 21);
+    writePageTextAndGraphics(6, getLinePointer(6), 0, 21);
+    writePageTextAndGraphics(7, getLinePointer(7), 0, 21);
     core.sh1106TransferEnd();
   }
 
