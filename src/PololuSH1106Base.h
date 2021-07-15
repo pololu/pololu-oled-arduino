@@ -562,11 +562,11 @@ private:
 
 
   //// 8x2 layout //////////////////////////////////////////////////////////////
-  // Character size:               10x16
-  // Character horizontal margin:  2
-  // Left and right margins:       (128 - 8*10 - 7*2)/2 = 17
-  // Line 0:                       pages 2 and 3
-  // Line 1:                       pages 5 and 6
+  // Character size:                 10x16
+  // Character horizontal margin:    2
+  // Screen left and right margins:  (128 - 8*10 - 7*2)/2 = 17
+  // Line 0:                         pages 2 and 3
+  // Line 1:                         pages 5 and 6
 
   void display8x2TextPartial(uint8_t x, uint8_t y, uint8_t width)
   {
@@ -627,8 +627,8 @@ private:
   //// 10x4 layout /////////////////////////////////////////////////////////////
   //   Character size:               10x16
   //   Character horizontal margin:  2
-  //   Left margin:                  0
-  //   Right margin:                 10  (off center: more room for graphics)
+  //   Screen left margin:           0
+  //   Screen right margin:          10  (off center: more room for graphics)
   //   Line 0:                       pages 0 and 1
   //   Line 1:                       pages 2 and 3
   //   Line 3:                       pages 4 and 5
@@ -697,8 +697,8 @@ private:
   //// 21x8 layout /////////////////////////////////////////////////////////////
   //   Character size:               5x8
   //   Character horizontal margin:  1
-  //   Left margin:                  0
-  //   Right margin:                 3  (off center: more room for graphics)
+  //   Screen left margin:           0
+  //   Screen right margin:          3  (off center: more room for graphics)
   //   Line number = Page number
 
   void display21x8TextPartial(uint8_t x, uint8_t y, uint8_t width)
