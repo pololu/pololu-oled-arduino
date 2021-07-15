@@ -618,7 +618,8 @@ private:
   //// 10x4 layout /////////////////////////////////////////////////////////////
   //   Character size:               10x16
   //   Character horizontal margin:  2
-  //   Left margin:                  (128 - 10*10 - 9*2)/2 = 5
+  //   Left margin:                  0
+  //   Right margin:                 10  (off center: more room for graphics)
   //   Line 0:                       pages 0 and 1
   //   Line 1:                       pages 2 and 3
   //   Line 3:                       pages 4 and 5
@@ -631,7 +632,7 @@ private:
     if (width == 0) { return; }
 
     const uint8_t page = y * 2;
-    const uint8_t columnAddr = 2 + 5 + x * 12;
+    const uint8_t columnAddr = 2 + x * 12;
     const uint8_t * const textStart = getLinePointer(y) + x;
 
     core.sh1106TransferStart();
@@ -643,14 +644,14 @@ private:
   void display10x4Text()
   {
     core.sh1106TransferStart();
-    writeSegmentUpperText(0, 2 + 5, getLinePointer(0), 10);
-    writeSegmentLowerText(1, 2 + 5, getLinePointer(0), 10);
-    writeSegmentUpperText(2, 2 + 5, getLinePointer(1), 10);
-    writeSegmentLowerText(3, 2 + 5, getLinePointer(1), 10);
-    writeSegmentUpperText(4, 2 + 5, getLinePointer(2), 10);
-    writeSegmentLowerText(5, 2 + 5, getLinePointer(2), 10);
-    writeSegmentUpperText(6, 2 + 5, getLinePointer(3), 10);
-    writeSegmentLowerText(7, 2 + 5, getLinePointer(3), 10);
+    writeSegmentUpperText(0, 2, getLinePointer(0), 10);
+    writeSegmentLowerText(1, 2, getLinePointer(0), 10);
+    writeSegmentUpperText(2, 2, getLinePointer(1), 10);
+    writeSegmentLowerText(3, 2, getLinePointer(1), 10);
+    writeSegmentUpperText(4, 2, getLinePointer(2), 10);
+    writeSegmentLowerText(5, 2, getLinePointer(2), 10);
+    writeSegmentUpperText(6, 2, getLinePointer(3), 10);
+    writeSegmentLowerText(7, 2, getLinePointer(3), 10);
     core.sh1106TransferEnd();
   }
 
@@ -661,7 +662,7 @@ private:
     if (width == 0) { return; }
 
     const uint8_t page = y * 2;
-    const uint8_t columnAddr = 2 + 5 + x * 12;
+    const uint8_t columnAddr = 2 + x * 12;
     uint8_t * const text = getLinePointer(y) + x;
 
     core.sh1106TransferStart();
@@ -673,14 +674,14 @@ private:
   void display10x4TextAndGraphics()
   {
     core.sh1106TransferStart();
-    writePageUpperTextAndGraphics(0, getLinePointer(0), 5, 10, 3);
-    writePageLowerTextAndGraphics(1, getLinePointer(0), 5, 10, 3);
-    writePageUpperTextAndGraphics(2, getLinePointer(1), 5, 10, 3);
-    writePageLowerTextAndGraphics(3, getLinePointer(1), 5, 10, 3);
-    writePageUpperTextAndGraphics(4, getLinePointer(2), 5, 10, 3);
-    writePageLowerTextAndGraphics(5, getLinePointer(2), 5, 10, 3);
-    writePageUpperTextAndGraphics(6, getLinePointer(3), 5, 10, 3);
-    writePageLowerTextAndGraphics(7, getLinePointer(3), 5, 10, 3);
+    writePageUpperTextAndGraphics(0, getLinePointer(0), 0, 10, 8);
+    writePageLowerTextAndGraphics(1, getLinePointer(0), 0, 10, 8);
+    writePageUpperTextAndGraphics(2, getLinePointer(1), 0, 10, 8);
+    writePageLowerTextAndGraphics(3, getLinePointer(1), 0, 10, 8);
+    writePageUpperTextAndGraphics(4, getLinePointer(2), 0, 10, 8);
+    writePageLowerTextAndGraphics(5, getLinePointer(2), 0, 10, 8);
+    writePageUpperTextAndGraphics(6, getLinePointer(3), 0, 10, 8);
+    writePageLowerTextAndGraphics(7, getLinePointer(3), 0, 10, 8);
     core.sh1106TransferEnd();
   }
 
@@ -688,7 +689,7 @@ private:
   //   Character size:               5x8
   //   Character horizontal margin:  1
   //   Left margin:                  0
-  //   Right margin:                 3  (1.5px off center: more room for graphics)
+  //   Right margin:                 3  (off center: more room for graphics)
   //   Line number = Page number
 
   void display21x8TextPartial(uint8_t x, uint8_t y, uint8_t width)
