@@ -79,7 +79,6 @@ void drawGraphics()
 
 void setup()
 {
-
   drawGraphics();
   display.loadCustomCharacter(clockwiseChar, 6);
   display.loadCustomCharacter(counterClockwiseChar, 7);

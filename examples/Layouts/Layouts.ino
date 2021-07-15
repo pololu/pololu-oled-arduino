@@ -1,9 +1,11 @@
 // This sketch shows all the layouts provided by the library.
 
-#include <Pololu3piPlus32U4.h>
+#include <PololuOLED.h>
 
-using namespace Pololu3piPlus32U4;
-
+// You will need to modify the pin numbers on the line below
+// to indicate what Arduino pins to use to control the display.
+// The pins are specified in this order: CLK, MOS, RES, DC, CS.
+// Pass 255 for RES, DC, or CS if you are not using them.
 PololuSH1106 display(1, 30, 0, 17, 13);
 
 uint8_t graphics[8 * 128];
