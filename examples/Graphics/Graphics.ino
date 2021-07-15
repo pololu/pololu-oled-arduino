@@ -1,5 +1,5 @@
-// This example shows how to show text and graphics on the OLED
-// at the same time using an external graphics buffer.
+// This example shows how to display text and graphics on the
+// OLED at the same time using an external graphics buffer.
 
 #include <PololuOLED.h>
 
@@ -53,7 +53,7 @@ void drawRectangle(uint8_t topLeftX, uint8_t topLeftY,
   }
 }
 
-void drawSolidRectange(uint8_t topLeftX, uint8_t topLeftY,
+void drawSolidRectangle(uint8_t topLeftX, uint8_t topLeftY,
   uint8_t width, uint8_t height)
 {
   if (topLeftX >= 128) { return; }
@@ -79,10 +79,8 @@ void drawSolidRectange(uint8_t topLeftX, uint8_t topLeftY,
 void setup()
 {
   display.setLayout10x4WithGraphics(graphics);
-  // display.setLayout21x8WithGraphics(graphics); // smaller text
 
   delay(1000);
-
 }
 
 void loop()
@@ -124,7 +122,7 @@ void loop()
   display.print(F("barV"));
   for (uint8_t i = 0; i < 6; i++)
   {
-    drawSolidRectange(i * 8, 64 - barGraphData[i], 6, barGraphData[i]);
+    drawSolidRectangle(i * 8, 64 - barGraphData[i], 6, barGraphData[i]);
   }
   display.display();
   delay(2000);
