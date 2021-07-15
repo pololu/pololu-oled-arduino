@@ -119,9 +119,18 @@ void loop()
   display.gotoXY(0, 1);
   display.print(F("\6 P2   \7"));
   display.gotoXY(0, 2);
-  display.print(F("01234567890123456789"));
+  display.print(F("0123456789 0123456789"));
   display.gotoXY(0, 3);
-  display.print(F("ABCDEFGHIJKLMNOPQRST"));
+  display.print(F("ABCDEFGHIJKLMNOPQRSTU"));
+  display.gotoXY(0, 4);
+  display.print(F("\6\6\6\6\6           \7\7\7\7\7"));
+  display.gotoXY(0, 5);
+  display.print(F(" \6\6\6\6\6         \7\7\7\7\7 "));
+  display.gotoXY(0, 6);
+  display.print(F("  \6\6\6\6\6       \7\7\7\7\7  "));
+  display.gotoXY(0, 7);
+  display.print(F("   \6\6\6\6\6     \7\7\7\7\7   "));
+
   benchmarkStart();
   display.display();
   benchmarkEnd();
@@ -186,6 +195,34 @@ void loop()
   display.print("\6 P8   \7");
   benchmarkEnd();
   benchmarkReport(F("10x4+graphics, partial update, 8 chars"));
+
+  display.setLayout21x8();
+  display.display(); // first display takes extra time clearing RAM
+
+  benchmarkStart();
+  display.display();
+  benchmarkEnd();
+  benchmarkReport(F("21x8, full update"));
+
+  display.gotoXY(0, 0);
+  benchmarkStart();
+  display.print("\6 P9   \7");
+  benchmarkEnd();
+  benchmarkReport(F("21x8, partial update, 8 chars"));
+
+  display.setLayout21x8WithGraphics(graphics);
+  display.display(); // first display takes extra time clearing RAM
+
+  benchmarkStart();
+  display.display();
+  benchmarkEnd();
+  benchmarkReport(F("21x8+graphics, full update"));
+
+  display.gotoXY(0, 1);
+  benchmarkStart();
+  display.print("\6 P10  \7");
+  benchmarkEnd();
+  benchmarkReport(F("21x8, partial update, 8 chars"));
 
   Serial.println();
 

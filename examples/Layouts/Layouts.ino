@@ -43,10 +43,10 @@ void setup()
 {
   drawGraphics();
 
-  memset(display.getLinePointer(0), '0', 20);
-  memset(display.getLinePointer(1), '1', 20);
-  memset(display.getLinePointer(2), '2', 20);
-  memset(display.getLinePointer(3), '3', 20);
+  for (uint8_t line = 0; line < 8; line++)
+  {
+    memset(display.getLinePointer(line), '0' + line, 21);
+  }
 }
 
 void loop()
@@ -64,6 +64,14 @@ void loop()
   delay(2000);
 
   display.setLayout10x4WithGraphics(graphics);
+  display.display();
+  delay(2000);
+
+  display.setLayout21x8();
+  display.display();
+  delay(2000);
+
+  display.setLayout21x8WithGraphics(graphics);
   display.display();
   delay(2000);
 }

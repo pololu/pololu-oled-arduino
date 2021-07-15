@@ -19,8 +19,8 @@
 /// @section core Core class
 ///
 /// Instead of passing pin numbers to this class to specify what pins your
-/// OLED is on, you pass a core class as a first template parameter.  This class
-/// must implement the following public functions which take care of
+/// OLED is on, you pass a core class as a first template parameter.  The
+/// core class must implement the following public functions which take care of
 /// communication with the SH1106 at a low level:
 ///
 /// - void initPins();
@@ -260,7 +260,7 @@ public:
   /// @brief Configures this library to use a layout with 8 columns and
   /// 2 rows of text, XORed with a graphics buffer.
   ///
-  /// @param graphics A pointer to a 1024-byte graphics buffer in RAM.
+  /// @param graphics A pointer to a 1024-byte graphics buffer.
   void setLayout8x2WithGraphics(const uint8_t * graphics)
   {
     graphicsBuffer = graphics;
@@ -282,7 +282,7 @@ public:
   /// @brief Configures this library to use a layout with 10 columns and
   /// 4 rows of text, XORed with a graphics buffer.
   ///
-  /// @param graphics A pointer to a 1024-byte graphics buffer in RAM.
+  /// @param graphics A pointer to a 1024-byte graphics buffer.
   void setLayout10x4WithGraphics(const uint8_t * graphics)
   {
     graphicsBuffer = graphics;
@@ -291,8 +291,27 @@ public:
     clearDisplayRamOnNextDisplay = true;
   }
 
+  /// @brief Configures this library to use a layout with
+  /// 20 columns and 8 rows of text.
+  void setLayout21x8()
+  {
+    graphicsBuffer = nullptr;
+    displayFunction = &PololuSH1106Base::display21x8Text;
+    displayPartialFunction = &PololuSH1106Base::display21x8TextPartial;
+    clearDisplayRamOnNextDisplay = true;
+  }
 
-  // TODO: add some layouts that allow for more text
+  /// @brief Configures this library to use a layout with 20 columns and
+  /// 8 rows of text, XORed with a graphics buffer.
+  ///
+  /// @param graphics A pointer to a 1024-byte graphics buffer.
+  void setLayout21x8WithGraphics(const uint8_t * graphics)
+  {
+    graphicsBuffer = graphics;
+    displayFunction = &PololuSH1106Base::display21x8TextAndGraphics;
+    displayPartialFunction = &PololuSH1106Base::display21x8TextAndGraphicsPartial;
+    clearDisplayRamOnNextDisplay = true;
+  }
 
   //////// Display routines
 
@@ -312,6 +331,17 @@ private:
     {
       return 0;
     }
+  }
+
+  void writePageGraphics(uint8_t page)
+  {
+    core.sh1106CommandMode();
+    core.sh1106Write(SH1106_SET_PAGE_ADDR | page);
+    core.sh1106Write(SH1106_SET_COLUMN_ADDR_HIGH | 0);
+    core.sh1106Write(SH1106_SET_COLUMN_ADDR_LOW | 2);
+    core.sh1106DataMode();
+    const uint8_t * g = graphicsBuffer + page * 128;
+    for (uint8_t x = 0; x < 128; x++) { core.sh1106Write(*g++); }
   }
 
   void writeSegmentUpperText(uint8_t page, uint8_t columnAddr,
@@ -358,17 +388,6 @@ private:
       core.sh1106Write(0);
       core.sh1106Write(0);
     }
-  }
-
-  void writePageGraphics(uint8_t page)
-  {
-    core.sh1106CommandMode();
-    core.sh1106Write(SH1106_SET_PAGE_ADDR | page);
-    core.sh1106Write(SH1106_SET_COLUMN_ADDR_HIGH | 0);
-    core.sh1106Write(SH1106_SET_COLUMN_ADDR_LOW | 2);
-    core.sh1106DataMode();
-    const uint8_t * g = graphicsBuffer + page * 128;
-    for (uint8_t x = 0; x < 128; x++) { core.sh1106Write(*g++); }
   }
 
   void writeSegmentUpperTextAndGraphics(uint8_t page, uint8_t columnAddr,
@@ -428,7 +447,6 @@ private:
     core.sh1106Write(SH1106_SET_COLUMN_ADDR_LOW | 2);
     core.sh1106DataMode();
     const uint8_t * g = graphicsBuffer + page * 128;
-    //const uint8_t * t = textStart;
     for (uint8_t i = 0; i < leftMargin; i++) { core.sh1106Write(*g++); }
     for (uint8_t textX = 0; textX < textLength; textX++)
     {
@@ -472,12 +490,75 @@ private:
     for (uint8_t i = 0; i < rightMargin; i++) { core.sh1106Write(*g++); }
   }
 
-  // 8x2 layout:
-  //   Character size:               10x16
-  //   Character horizontal margin:  2
-  //   Left margins:                 (128 - 8*10 - 7*2)/2 = 17
-  //   Line 0:                       pages 2 and 3
-  //   Line 1:                       pages 5 and 6
+  void writeSegmentText(uint8_t page, uint8_t columnAddr,
+    const uint8_t * text, uint8_t textLength)
+  {
+    core.sh1106CommandMode();
+    core.sh1106Write(SH1106_SET_PAGE_ADDR | page);
+    core.sh1106Write(SH1106_SET_COLUMN_ADDR_HIGH | (columnAddr >> 4));
+    core.sh1106Write(SH1106_SET_COLUMN_ADDR_LOW | (columnAddr & 0xF));
+    core.sh1106DataMode();
+    for (uint8_t i = 0; i < textLength; i++)
+    {
+      uint8_t glyph = *text++;
+      for (uint8_t pixelX = 0; pixelX < 5; pixelX++)
+      {
+        core.sh1106Write(getGlyphColumn(glyph, pixelX));
+      }
+      core.sh1106Write(0);
+    }
+  }
+
+  void writeSegmentTextAndGraphics(uint8_t page, uint8_t columnAddr,
+    const uint8_t * text, uint8_t textLength)
+  {
+    core.sh1106CommandMode();
+    core.sh1106Write(SH1106_SET_PAGE_ADDR | page);
+    core.sh1106Write(SH1106_SET_COLUMN_ADDR_HIGH | (columnAddr >> 4));
+    core.sh1106Write(SH1106_SET_COLUMN_ADDR_LOW | (columnAddr & 0xF));
+    core.sh1106DataMode();
+    const uint8_t * g = graphicsBuffer + page * 128 + (columnAddr - 2);
+    for (uint8_t i = 0; i < textLength; i++)
+    {
+      uint8_t glyph = *text++;
+      for (uint8_t pixelX = 0; pixelX < 5; pixelX++)
+      {
+        core.sh1106Write(getGlyphColumn(glyph, pixelX) ^ *g++);
+      }
+      core.sh1106Write(*g++);
+    }
+  }
+
+  void writePageTextAndGraphics(uint8_t page, const uint8_t * text,
+    uint8_t leftMargin, uint8_t textLength, uint8_t rightMargin)
+  {
+    core.sh1106CommandMode();
+    core.sh1106Write(SH1106_SET_PAGE_ADDR | page);
+    core.sh1106Write(SH1106_SET_COLUMN_ADDR_HIGH | 0);
+    core.sh1106Write(SH1106_SET_COLUMN_ADDR_LOW | 2);
+    core.sh1106DataMode();
+    const uint8_t * g = graphicsBuffer + page * 128;
+    for (uint8_t i = 0; i < leftMargin; i++) { core.sh1106Write(*g++); }
+    for (uint8_t textX = 0; textX < textLength; textX++)
+    {
+      uint8_t glyph = *text++;
+      for (uint8_t pixelX = 0; pixelX < 5; pixelX++)
+      {
+        core.sh1106Write(getGlyphColumn(glyph, pixelX) ^ *g++);
+       }
+       core.sh1106Write(*g++);
+    }
+    for (uint8_t i = 0; i < rightMargin; i++) { core.sh1106Write(*g++); }
+  }
+
+
+  //// 8x2 layout //////////////////////////////////////////////////////////////
+  // Character size:               10x16
+  // Character horizontal margin:  2
+  // Left margins:                 (128 - 8*10 - 7*2)/2 = 17
+  // Line 0:                       pages 2 and 3
+  // Line 1:                       pages 5 and 6
+
   void display8x2TextPartial(uint8_t x, uint8_t y, uint8_t width)
   {
     if (x >= 8 || y >= 2) { return; }
@@ -534,7 +615,7 @@ private:
     core.sh1106TransferEnd();
   }
 
-  // 10x4 layout:
+  //// 10x4 layout /////////////////////////////////////////////////////////////
   //   Character size:               10x16
   //   Character horizontal margin:  2
   //   Left margin:                  (128 - 10*10 - 9*2)/2 = 5
@@ -542,6 +623,7 @@ private:
   //   Line 1:                       pages 2 and 3
   //   Line 3:                       pages 4 and 5
   //   Line 4:                       pages 6 and 7
+
   void display10x4TextPartial(uint8_t x, uint8_t y, uint8_t width)
   {
     if (x >= 10 || y >= 4) { return; }
@@ -599,6 +681,69 @@ private:
     writePageLowerTextAndGraphics(5, getLinePointer(2), 5, 10, 3);
     writePageUpperTextAndGraphics(6, getLinePointer(3), 5, 10, 3);
     writePageLowerTextAndGraphics(7, getLinePointer(3), 5, 10, 3);
+    core.sh1106TransferEnd();
+  }
+
+  //// 21x8 layout /////////////////////////////////////////////////////////////
+  //   Character size:               5x8
+  //   Character horizontal margin:  1
+  //   Left margin:                  0
+  //   Right margin:                 3  (1.5px off center: more room for graphics)
+  //   Line number = Page number
+
+  void display21x8TextPartial(uint8_t x, uint8_t y, uint8_t width)
+  {
+    if (x >= 21 || y >= 8) { return; }
+    if (width > (uint8_t)(21 - x)) { width = 21 - x; }
+    if (width == 0) { return; }
+
+    const uint8_t columnAddr = 2 + x * 6;
+    const uint8_t * const textStart = getLinePointer(y) + x;
+
+    core.sh1106TransferStart();
+    writeSegmentText(y, columnAddr, textStart, width);
+    core.sh1106TransferEnd();
+  }
+
+  void display21x8Text()
+  {
+    core.sh1106TransferStart();
+    writeSegmentText(0, 2, getLinePointer(0), 21);
+    writeSegmentText(1, 2, getLinePointer(1), 21);
+    writeSegmentText(2, 2, getLinePointer(2), 21);
+    writeSegmentText(3, 2, getLinePointer(3), 21);
+    writeSegmentText(4, 2, getLinePointer(4), 21);
+    writeSegmentText(5, 2, getLinePointer(5), 21);
+    writeSegmentText(6, 2, getLinePointer(6), 21);
+    writeSegmentText(7, 2, getLinePointer(7), 21);
+    core.sh1106TransferEnd();
+  }
+
+  void display21x8TextAndGraphicsPartial(uint8_t x, uint8_t y, uint8_t width)
+  {
+    if (x >= 21 || y >= 8) { return; }
+    if (width > (uint8_t)(21 - x)) { width = 21 - x; }
+    if (width == 0) { return; }
+
+    const uint8_t columnAddr = 2 + x * 6;
+    uint8_t * const text = getLinePointer(y) + x;
+
+    core.sh1106TransferStart();
+    writeSegmentTextAndGraphics(y, columnAddr, text, width);
+    core.sh1106TransferEnd();
+  }
+
+  void display21x8TextAndGraphics()
+  {
+    core.sh1106TransferStart();
+    writePageTextAndGraphics(0, getLinePointer(0), 0, 21, 3);
+    writePageTextAndGraphics(1, getLinePointer(1), 0, 21, 3);
+    writePageTextAndGraphics(2, getLinePointer(2), 0, 21, 3);
+    writePageTextAndGraphics(3, getLinePointer(3), 0, 21, 3);
+    writePageTextAndGraphics(4, getLinePointer(4), 0, 21, 3);
+    writePageTextAndGraphics(5, getLinePointer(5), 0, 21, 3);
+    writePageTextAndGraphics(6, getLinePointer(6), 0, 21, 3);
+    writePageTextAndGraphics(7, getLinePointer(7), 0, 21, 3);
     core.sh1106TransferEnd();
   }
 
@@ -834,7 +979,7 @@ private:
   void (PololuSH1106Base::*displayFunction)();
   void (PololuSH1106Base::*displayPartialFunction)(uint8_t, uint8_t, uint8_t);
 
-  static const uint8_t textBufferWidth = 20, textBufferHeight = 8;
+  static const uint8_t textBufferWidth = 21, textBufferHeight = 8;
 
   uint8_t textBuffer[textBufferHeight * textBufferWidth];
   uint8_t textCursorX;
