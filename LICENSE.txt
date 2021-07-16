@@ -1,4 +1,14 @@
-Copyright (c) 2020 Pololu Corporation (www.pololu.com)
+
+The code in the examples directory and in oled_font.cpp
+is free and unencumbered software released into the
+public domain.
+
+Additionally, the license below is available for all the
+files in this library.
+
+------
+
+Copyright (c) 2021 Pololu Corporation (www.pololu.com)
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
