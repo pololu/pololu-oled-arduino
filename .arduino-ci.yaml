@@ -1,0 +1,2 @@
+library_archives:
+  - Adafruit_SSD1306=https://github.com/adafruit/Adafruit_SSD1306/archive/refs/tags/2.4.6.tar.gz=0
