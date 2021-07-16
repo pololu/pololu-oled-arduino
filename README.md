@@ -8,11 +8,11 @@ It works with the following Pololu products:
 
 - [Graphical OLED Display: 128x64, 1.3", White, SPI][3760]
 
-This library can display monospaced text without requiring you to store
+This library can display text without requiring you to store
 the state of every pixel in RAM.
 
-It can also display an external 1024-byte graphics buffer,
-mixing it with the text.
+It can also display an external graphics buffer, combining the
+graphics and text together as it writes to the display.
 
 It provides a separation between the low-level hardware access functions and
 the high-level OLED update routines, so that the low-level functions can be
