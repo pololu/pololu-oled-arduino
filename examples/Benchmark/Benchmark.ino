@@ -6,8 +6,8 @@
 // By default we use the PololuSH1106Generic class.  Comment out
 // USE_GENERIC and uncomment one of the other options if you want
 // to benchmark a different class.
-//#define USE_GENERIC
-#define USE_POLOLU_3PI_PLUS_32U4_LIB
+#define USE_GENERIC
+//#define USE_POLOLU_3PI_PLUS_32U4_LIB
 
 #ifdef USE_POLOLU_3PI_PLUS_32U4_LIB
 #include <Pololu3piPlus32U4.h>
