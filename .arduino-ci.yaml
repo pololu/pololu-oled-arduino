@@ -1,4 +1,4 @@
 library_archives:
   - Adafruit_SSD1306=https://github.com/adafruit/Adafruit_SSD1306/archive/refs/tags/2.4.6.tar.gz=1y8glyr7s5xdqywidg03q3vqc19681pw4927s6xkdgqq4wxiwdfv
   - Adafruit_GFX=https://github.com/adafruit/Adafruit-GFX-Library/archive/refs/tags/1.10.10.tar.gz=1psz0sy1wxpc2dkqxa6p0nybj2lnf1lhw3wvc47bmjqrbr43zx51
-  - Arduino_BusIO=https://github.com/adafruit/Adafruit_BusIO/archive/refs/tags/1.8.2.tar.gz=0
+  - Arduino_BusIO=https://github.com/adafruit/Adafruit_BusIO/archive/refs/tags/1.8.2.tar.gz=0wyi89qri40kz743lij2a49x2q3ajz4ns46kj7l85cpcgc8z5szb
