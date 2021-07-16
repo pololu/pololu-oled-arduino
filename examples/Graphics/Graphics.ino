@@ -111,7 +111,7 @@ void loop()
   barGraphData[1] = 62;
   barGraphData[2] = 64;
   barGraphData[3] = 40;
-  barGraphData[4] = millis() & 63;
+  barGraphData[4] = 1 + (millis() & 63);
   barGraphData[5] = random(1, 64);
 
   // Vertical bar graph
