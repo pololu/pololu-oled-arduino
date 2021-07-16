@@ -2,18 +2,18 @@
 
 #pragma once
 
-#include "PololuSH1106Base.h"
+#include "PololuSH1106Main.h"
 
 /// @brief SH1106 core class implemented using Arduino I/O functions.
 ///
-/// This is a core class for use as the template parameter for PololuSH1106Base.
-/// It show how to implement the low-level SH1106 communication routines needed
-/// by PololuSH1106Base using standard Arduino I/O functions.
+/// This is a core class for use as the template parameter for PololuSH1106Main.
+/// It shows how to implement the low-level SH1106 communication routines needed
+/// by PololuSH1106Main using standard Arduino I/O functions.
 ///
 /// This class should work on any Arduino-compatible board, but it does not have
-/// ideal performance.  In 8x2 text+graphics mode on an ATmega32U4 running at
-/// 16 MHz, updating the full screen takes about 110 ms.  You can speed this up
-/// by about 15 times by using an optimized class that directly writes to
+/// ideal performance.  In 8x2 text and graphics mode on an ATmega32U4 running
+/// at 16 MHz, updating the full screen takes about 110 ms.  You can speed this
+/// up by about 15 times by using an optimized class that directly writes to
 /// specific I/O registers instead of using this class.
 class PololuSH1106Core
 {
@@ -34,7 +34,7 @@ public:
     csPin = cs;
   }
 
-  // @brief This function is called by PololuSH1106Base to perform any
+  // @brief This function is called by PololuSH1106Main to perform any
   // initializations that might be needed for the other functions to work
   // properly.
   void initPins()
@@ -47,7 +47,7 @@ public:
     if (csPin != 255) { pinMode(csPin, OUTPUT); }
   }
 
-  // @brief This function is called by PololuSH1106Base to reset the SH1106.
+  // @brief This function is called by PololuSH1106Main to reset the SH1106.
   void reset()
   {
     if (resPin == 255) { return; }
@@ -57,10 +57,10 @@ public:
     delayMicroseconds(10);
   }
 
-  // @brief This function is called by PololuSH1106Base to start a data
+  // @brief This function is called by PololuSH1106Main to start a data
   // transfer to the SH1106.
   //
-  // After calling this function, PololuSH1106Base will call sh1106CommandMode(),
+  // After calling this function, PololuSH1106Main will call sh1106CommandMode(),
   // sh1106DataMode(), and sh1106Write() to send data to the SH1106, and then
   // it will call sh1106TransferEnd when it is done.
   void sh1106TransferStart()
@@ -71,14 +71,14 @@ public:
     if (csPin != 255) { digitalWrite(csPin, LOW); }
   }
 
-  // @brief This function is called by PololuSH1106Base to end a data
+  // @brief This function is called by PololuSH1106Main to end a data
   // transfer to the SH1106.
   void sh1106TransferEnd()
   {
     if (csPin != 255) { digitalWrite(csPin, HIGH); }
   }
 
-  // @brief This function is called by PololuSH1106Base to indicate that the
+  // @brief This function is called by PololuSH1106Main to indicate that the
   // bytes it is about to pass to sh1106Write are command bytes.
   void sh1106CommandMode()
   {
@@ -86,7 +86,7 @@ public:
     if (dcPin != 255) { digitalWrite(dcPin, LOW); }
   }
 
-  // @brief This function is called by PololuSH1106Base to indicate that the
+  // @brief This function is called by PololuSH1106Main to indicate that the
   // bytes it is about to pass to sh1106Write are data bytes.
   void sh1106DataMode()
   {
@@ -94,7 +94,7 @@ public:
     if (dcPin != 255) { digitalWrite(dcPin, HIGH); }
   }
 
-  // @brief This function is called by PololuSH1106Base to write commands or
+  // @brief This function is called by PololuSH1106Main to write commands or
   // data to the SH1106.
   void sh1106Write(uint8_t d)
   {
@@ -144,7 +144,7 @@ private:
 };
 
 /// @brief Generic SH1106 class implemented using Arduino I/O functions.
-class PololuSH1106 : public PololuSH1106Base<PololuSH1106Core>
+class PololuSH1106 : public PololuSH1106Main<PololuSH1106Core>
 {
 public:
   /// @brief Creates a new instanace of PololuSH1106.

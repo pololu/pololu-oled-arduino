@@ -40,7 +40,7 @@
 /// text buffer.
 ///
 /// This class inherits print() from the Arduino Print class
-/// (via PololuSH1106Base), so you can call print() with a variety of arguments.
+/// (via PololuSH1106Main), so you can call print() with a variety of arguments.
 /// See the [Arduino print() documentation](http://arduino.cc/en/Serial/Print)
 /// for more information.
 ///
@@ -67,6 +67,8 @@
 ///
 /// To override the font, simply copy the file font.cpp into your sketch
 /// directory, remove `__attribute__((weak))`, and then make your changes.
+/// The size of the font characters is hardcoded in the library and cannot be
+/// changed with this method.
 ///
 /// @section graphics-buffer Graphics buffer
 ///
@@ -86,7 +88,7 @@
 /// This class implements clear(), gotoXY(), write(),
 /// print() (provided by the Arduino Print class),
 /// loadCustomCharacter(), and loadCustomCharacterFromRam(),
-/// so a class based on PololuSH1106Base can be used as a
+/// so a class based on PololuSH1106Main can be used as a
 /// a drop-in replacement for a class based on PololuHD44780Base from the
 /// [PololuHD44780 library](https://github.com/pololu/pololu-hd44780-arduino)
 /// in most applications.
@@ -103,11 +105,11 @@
 ///
 /// The display() function turns auto-display mode back on, so you will need to
 /// call noAutoDisplay() again whenever you want to do a flickerless update.
-template<class C> class PololuSH1106Base : public Print
+template<class C> class PololuSH1106Main : public Print
 {
 public:
 
-  PololuSH1106Base()
+  PololuSH1106Main()
   {
     memset(textBuffer, ' ', sizeof(textBuffer));
     setLayout8x2();
@@ -252,8 +254,8 @@ public:
   void setLayout8x2()
   {
     graphicsBuffer = nullptr;
-    displayFunction = &PololuSH1106Base::display8x2Text;
-    displayPartialFunction = &PololuSH1106Base::display8x2TextPartial;
+    displayFunction = &PololuSH1106Main::display8x2Text;
+    displayPartialFunction = &PololuSH1106Main::display8x2TextPartial;
     clearDisplayRamOnNextDisplay = true;
   }
 
@@ -264,8 +266,8 @@ public:
   void setLayout8x2WithGraphics(const uint8_t * graphics)
   {
     graphicsBuffer = graphics;
-    displayFunction = &PololuSH1106Base::display8x2TextAndGraphics;
-    displayPartialFunction = &PololuSH1106Base::display8x2TextAndGraphicsPartial;
+    displayFunction = &PololuSH1106Main::display8x2TextAndGraphics;
+    displayPartialFunction = &PololuSH1106Main::display8x2TextAndGraphicsPartial;
     clearDisplayRamOnNextDisplay = true;
   }
 
@@ -274,8 +276,8 @@ public:
   void setLayout10x4()
   {
     graphicsBuffer = nullptr;
-    displayFunction = &PololuSH1106Base::display10x4Text;
-    displayPartialFunction = &PololuSH1106Base::display10x4TextPartial;
+    displayFunction = &PololuSH1106Main::display10x4Text;
+    displayPartialFunction = &PololuSH1106Main::display10x4TextPartial;
     clearDisplayRamOnNextDisplay = true;
   }
 
@@ -286,8 +288,8 @@ public:
   void setLayout10x4WithGraphics(const uint8_t * graphics)
   {
     graphicsBuffer = graphics;
-    displayFunction = &PololuSH1106Base::display10x4TextAndGraphics;
-    displayPartialFunction = &PololuSH1106Base::display10x4TextAndGraphicsPartial;
+    displayFunction = &PololuSH1106Main::display10x4TextAndGraphics;
+    displayPartialFunction = &PololuSH1106Main::display10x4TextAndGraphicsPartial;
     clearDisplayRamOnNextDisplay = true;
   }
 
@@ -296,8 +298,8 @@ public:
   void setLayout21x8()
   {
     graphicsBuffer = nullptr;
-    displayFunction = &PololuSH1106Base::display21x8Text;
-    displayPartialFunction = &PololuSH1106Base::display21x8TextPartial;
+    displayFunction = &PololuSH1106Main::display21x8Text;
+    displayPartialFunction = &PololuSH1106Main::display21x8TextPartial;
     clearDisplayRamOnNextDisplay = true;
   }
 
@@ -308,8 +310,8 @@ public:
   void setLayout21x8WithGraphics(const uint8_t * graphics)
   {
     graphicsBuffer = graphics;
-    displayFunction = &PololuSH1106Base::display21x8TextAndGraphics;
-    displayPartialFunction = &PololuSH1106Base::display21x8TextAndGraphicsPartial;
+    displayFunction = &PololuSH1106Main::display21x8TextAndGraphics;
+    displayPartialFunction = &PololuSH1106Main::display21x8TextAndGraphicsPartial;
     clearDisplayRamOnNextDisplay = true;
   }
 
@@ -986,8 +988,8 @@ private:
   // We use the display routines through these member function pointers and are
   // careful about where we refer to them so that the routines for unused
   // layouts do not take up program space.
-  void (PololuSH1106Base::*displayFunction)();
-  void (PololuSH1106Base::*displayPartialFunction)(uint8_t, uint8_t, uint8_t);
+  void (PololuSH1106Main::*displayFunction)();
+  void (PololuSH1106Main::*displayPartialFunction)(uint8_t, uint8_t, uint8_t);
 
   static const uint8_t textBufferWidth = 21, textBufferHeight = 8;
 
