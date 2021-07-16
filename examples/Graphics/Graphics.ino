@@ -65,7 +65,7 @@ void drawSolidRectangle(uint8_t topLeftX, uint8_t topLeftY,
     if (height == 0) { return; }
     if (y >= 8) { y -= 8; continue; }
 
-    uint8_t heightOnThisPage = min(height, 8 - y);
+    uint8_t heightOnThisPage = min(height, (uint8_t)(8 - y));
     uint8_t mask = ((1 << heightOnThisPage) - 1) << y;
     for (uint8_t x = topLeftX; x < topLeftX + width; x++)
     {
