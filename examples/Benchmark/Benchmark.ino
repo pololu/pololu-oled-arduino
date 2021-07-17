@@ -1,5 +1,5 @@
-// Sketch to help test the speed and function of the OLED display
-// routines.
+// Sketch to help test the speed and function of the display
+// routines in the PololuOLED library.
 
 #include <PololuOLED.h>
 

@@ -18,6 +18,11 @@ It provides a separation between the low-level hardware access functions and
 the high-level OLED update routines, so that the low-level functions can be
 implemented with efficient application-specific code.
 
+Applications written for the [PololuHD44780 LCD library]
+can often be ported to this library with minimal effort since it provides
+the `clear`, `gotoXY`, `write`, `print`, and `loadCustomCharacter` functions.
+
+
 ## Supported platforms
 
 This library should work on any Arduino-compatible board.
@@ -90,13 +95,13 @@ retry the installation instructions above.
 For complete documentation of this library, see the
 https://pololu.github.io/pololu-oled-arduino.
 
-In particular the documentation of PololuSH1106Main.h gives a good overview of
-how the library works and lists all the functions you can call to display
-graphics or text.
+In particular the documentation of the PololuSH1106Main class gives a good
+overview of how the library works and lists all the functions you can call to
+display graphics or text.
 
 ### Version history
 
 * 1.0.0: Original release.
 
 [3760]: https://www.pololu.com/product/3760
-
+[PololuHD44780 LCD library]: https://github.com/pololu/pololu-hd44780-arduino

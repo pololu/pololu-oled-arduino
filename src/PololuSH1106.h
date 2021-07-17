@@ -1,5 +1,7 @@
 // Copyright (C) Pololu Corporation.  See www.pololu.com for details.
 
+/// @file PololuSH1106.h
+
 #pragma once
 
 #include "PololuSH1106Main.h"
@@ -11,7 +13,7 @@
 /// by PololuSH1106Main using standard Arduino I/O functions.
 ///
 /// This class should work on any Arduino-compatible board, but it does not have
-/// ideal performance.  In 8x2 text and graphics mode on an ATmega32U4 running
+/// ideal performance.  In 8x2 text+graphics mode on an ATmega32U4 running
 /// at 16 MHz, updating the full screen takes about 110 ms.  You can speed this
 /// up by about 15 times by using an optimized class that directly writes to
 /// specific I/O registers instead of using this class.
@@ -34,9 +36,9 @@ public:
     csPin = cs;
   }
 
-  // @brief This function is called by PololuSH1106Main to perform any
-  // initializations that might be needed for the other functions to work
-  // properly.
+  /// @brief This function is called by PololuSH1106Main to perform any
+  /// initializations that might be needed for the other functions to work
+  /// properly.
   void initPins()
   {
     if (resPin != 255) { pinMode(resPin, OUTPUT); }
@@ -47,7 +49,7 @@ public:
     if (csPin != 255) { pinMode(csPin, OUTPUT); }
   }
 
-  // @brief This function is called by PololuSH1106Main to reset the SH1106.
+  /// @brief This function is called by PololuSH1106Main to reset the SH1106.
   void reset()
   {
     if (resPin == 255) { return; }
@@ -57,12 +59,12 @@ public:
     delayMicroseconds(10);
   }
 
-  // @brief This function is called by PololuSH1106Main to start a data
-  // transfer to the SH1106.
-  //
-  // After calling this function, PololuSH1106Main will call sh1106CommandMode(),
-  // sh1106DataMode(), and sh1106Write() to send data to the SH1106, and then
-  // it will call sh1106TransferEnd when it is done.
+  /// @brief This function is called by PololuSH1106Main to start a data
+  /// transfer to the SH1106.
+  ///
+  /// After calling this function, PololuSH1106Main will call sh1106CommandMode(),
+  /// sh1106DataMode(), and sh1106Write() to send data to the SH1106, and then
+  /// it will call sh1106TransferEnd() when it is done.
   void sh1106TransferStart()
   {
     pinMode(clkPin, OUTPUT);
@@ -71,31 +73,31 @@ public:
     if (csPin != 255) { digitalWrite(csPin, LOW); }
   }
 
-  // @brief This function is called by PololuSH1106Main to end a data
-  // transfer to the SH1106.
+  /// @brief This function is called by PololuSH1106Main to end a data
+  /// transfer to the SH1106.
   void sh1106TransferEnd()
   {
     if (csPin != 255) { digitalWrite(csPin, HIGH); }
   }
 
-  // @brief This function is called by PololuSH1106Main to indicate that the
-  // bytes it is about to pass to sh1106Write are command bytes.
+  /// @brief This function is called by PololuSH1106Main to indicate that the
+  /// bytes it is about to pass to sh1106Write are command bytes.
   void sh1106CommandMode()
   {
     dataMode = 0;
     if (dcPin != 255) { digitalWrite(dcPin, LOW); }
   }
 
-  // @brief This function is called by PololuSH1106Main to indicate that the
-  // bytes it is about to pass to sh1106Write are data bytes.
+  /// @brief This function is called by PololuSH1106Main to indicate that the
+  /// bytes it is about to pass to sh1106Write are data bytes.
   void sh1106DataMode()
   {
     dataMode = 1;
     if (dcPin != 255) { digitalWrite(dcPin, HIGH); }
   }
 
-  // @brief This function is called by PololuSH1106Main to write commands or
-  // data to the SH1106.
+  /// @brief This function is called by PololuSH1106Main to write commands or
+  /// data to the SH1106.
   void sh1106Write(uint8_t d)
   {
     if (dcPin == 255)
@@ -149,13 +151,13 @@ class PololuSH1106 : public PololuSH1106Main<PololuSH1106Core>
 public:
   /// @brief Creates a new instanace of PololuSH1106.
   ///
-  /// @param clk The pin number to use to control the
+  /// @param clk The pin to use to control the
   ///   SH1106 CLK/SCL/D0 (clock input) pin.
-  /// @param mos The pin number to use to control the
+  /// @param mos The pin to use to control the
   ///   SH1106 MOS/MOSI/SI/D1 (data input) pin.
   /// @param res The pin to use to control the
   ///   SH1106 RES (reset) pin.
-  ///   If you are not using the RST pin, you can pass 255.
+  ///   If you are not using the RES pin, you can pass 255.
   /// @param dc The pin to use to control the
   ///   SH1106 DC/A0 (data mode / not command mode) pin.
   ///   If your display module uses 3-wire SPI mode so there is no DC pin to

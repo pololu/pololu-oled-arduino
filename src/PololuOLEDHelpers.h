@@ -1,15 +1,20 @@
 // Copyright (C) Pololu Corporation.  See www.pololu.com for details.
 
+/// @file PololuOLEDHelpers.h
+
 #pragma once
 
 #include <Arduino.h>
 
-/// The array is defined using the "weak" attribute, which means
-/// you can supply a definition in your own program if you want to override
-/// the default font.
-extern const uint8_t pololuOledFont[][5] PROGMEM;
+/// @brief This array defines the appearance of characters 32 through 255.
+///
+/// It is defined using the "weak" attribute, which means you can supply a
+/// definition in your own program if you want to override the default font.
+extern const PROGMEM uint8_t pololuOledFont[][5] ;
 
 namespace PololuOLEDHelpers {
+
+/// @cond
 
 static const uint8_t repeatBitsTable[16] PROGMEM = {
   0b00000000,
@@ -34,5 +39,8 @@ static inline uint8_t repeatBits(uint8_t d)
 {
   return pgm_read_byte(repeatBitsTable + d);
 }
+
+/// @endcond
+
 
 }

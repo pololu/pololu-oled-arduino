@@ -17,7 +17,7 @@ PololuSH1106 display(1, 30, 0, 17, 13);
 // are ordered left-to-right, then top-to-bottom.  (So byte at
 // offset 128 is displayed immediately below the byte at offset
 // 0.)
-uint8_t graphics[8 * 128];
+uint8_t graphics[1024];
 
 void clearGraphics()
 {

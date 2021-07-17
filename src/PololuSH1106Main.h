@@ -1,5 +1,7 @@
 // Copyright (C) Pololu Corporation.  See www.pololu.com for details.
 
+/// @file PololuSH1106Main.h
+
 #pragma once
 
 #include "PololuOLEDHelpers.h"
@@ -39,7 +41,7 @@
 /// screen.  The clear(), write(), and print() functions all write to the
 /// text buffer.
 ///
-/// This class inherits print() from the Arduino Print class
+/// This class inherits from the Arduino Print class
 /// (via PololuSH1106Main), so you can call print() with a variety of arguments.
 /// See the [Arduino print() documentation](http://arduino.cc/en/Serial/Print)
 /// for more information.
@@ -53,6 +55,9 @@
 ///
 /// @section font Font
 ///
+/// This library maps each character code from 0 to 255 to a corresponding
+/// 8x5 image.
+///
 /// Characters from 0 to 7 are custom characters: they are blank by default, but
 /// you can use loadCustomCharacter() or loadCustomCharacterFromRam() to
 /// specify their appearance.
@@ -60,15 +65,11 @@
 /// Characters 8 through 31 are hardcoded to be blank.
 ///
 /// Characters 32 through 255 come from pololuOledFont.
-/// It is defined with the "weak" attribute, so you can define your own version
-/// of the font if you want to modify the characters.  You can also save some
-/// program space by defining your own font which does not contain as many
-/// characters.
 ///
-/// To override the font, simply copy the file font.cpp into your sketch
-/// directory, remove `__attribute__((weak))`, and then make your changes.
-/// The size of the font characters is hardcoded in the library and cannot be
-/// changed with this method.
+/// It is possible to change the appearance (but not the size) of the font used
+/// for characters 32 through 255 without modifying this library.
+/// To do so, simply copy the file font.cpp into your sketch directory,
+/// remove `__attribute__((weak))`, and then make your changes.
 ///
 /// @section graphics-buffer Graphics buffer
 ///
@@ -167,11 +168,11 @@ public:
 
   /// @brief Initializes the OLED if it has not already been initialized.
   ///
-  /// This resets the OLED, sets some default settings, clears the
-  /// contents of the OLED RAM, and turns on the LED.
+  /// This resets the OLED, clears the contents of the OLED RAM, sets some
+  /// default settings, and turns on the display.
   ///
   /// Most users do not have to call this, because it is automatically called
-  /// by any public function that writes to the OLED.
+  /// by any public function in this class that writes to the OLED.
   void init() { if (!initialized) { init2(); } }
 
   /// @brief Reinitializes the OLED and its settings.
@@ -223,8 +224,11 @@ public:
 
   /// @brief Configures the OLED to use the default orientation.
   ///
-  /// This is not the orientation that the SH1106 uses by default after being
-  /// reset, but it is the default orientation used by this lirbary.
+  /// This is the orientation that results in the text shown on the
+  /// [Graphical OLED Display: 128x64, 1.3", White, SPI][3760]
+  /// from Pololu being the same orientation as the pin labels.
+  ///
+  /// [3760]: https://www.pololu.com/product/3760
   void noRotate()
   {
     init();
@@ -237,8 +241,8 @@ public:
 
   /// @brief Sets the contrast (i.e. brightness) of the OLED.
   ///
-  /// @param contrast A number between 0 (darkest, but still visible) and 255
-  /// (brightest, default).
+  /// @param contrast A number between 0 (darkest, but still visible) and
+  /// 255 (brightest, default).
   void setContrast(uint8_t contrast)
   {
     init();
@@ -767,8 +771,8 @@ public:
   /// noAutoDisplay().
   ///
   /// Note that this function does not always write to the entire display:
-  /// for text-only modes where the text does not occupy the entire screen,
-  /// it will normally only write to the portion of the screen containing text.
+  /// for text-only modes, it will normally only write to the portion of the
+  /// screen containing text.
   void display()
   {
     init();
@@ -824,13 +828,13 @@ public:
   /// This is for advanced users who want to use their own code to directly
   /// manipulate the text buffer.
   ///
-  /// The returned pointer will point to a region of memory at least 20 bytes
+  /// The returned pointer will point to a region of memory at least 21 bytes
   /// long that holds the specified line of text.  You can perform arbitrary
   /// operations on these bytes.
   ///
   /// Note that you should not assume anything about where the lines are in
   /// relation to each other, and you should not assume it is safe to write
-  /// beyond the 20th byte of a line.
+  /// beyond the 21st byte of a line.
   ///
   /// Note that functions like snprintf will add a null (0) character at the
   /// end of their output.  This is probably undesirable if you have configured
@@ -847,8 +851,8 @@ public:
   /// This function changes the text cursor, which is the location of the text
   /// that will be overwritten by the next call to write() or print().
   ///
-  /// @param x The row number (0 means top row).
-  /// @param y The column number (0 means left-most column).
+  /// @param x The column number (0 means left-most column).
+  /// @param y The row number (0 means top row).
   void gotoXY(uint8_t x, uint8_t y)
   {
     textCursorX = x;
@@ -909,9 +913,8 @@ public:
 
   /// @brief Writes a single character of text.
   ///
-  /// This is equivalent to writing a single character using the overload
-  /// of write() that takes two arguments.  See the documentation of that
-  /// overload for details.
+  /// This is equivalent to writing a single character using
+  /// write(const uint8_t *, size_t).
   size_t write(uint8_t d) override
   {
     if (textCursorY >= textBufferHeight) { return 0; }
@@ -930,7 +933,7 @@ public:
 
   /// @brief Defines a custom character from RAM.
   /// @param picture A pointer to the character dot pattern, in RAM.
-  /// @param number A number between 0 and 7.
+  /// @param number A character code between 0 and 7.
   void loadCustomCharacterFromRam(const uint8_t * picture, uint8_t number)
   {
     uint8_t * columns = customChars[number];
@@ -952,7 +955,7 @@ public:
 
   /// @brief Defines a custom character.
   /// @param picture A pointer to the character dot pattern, in program space.
-  /// @param number A number between 0 and 7.
+  /// @param number A character code between 0 and 7.
   void loadCustomCharacter(const uint8_t * picture, uint8_t number)
   {
     uint8_t ram_picture[8];
@@ -966,15 +969,14 @@ public:
   /// @brief Defines a custom character.
   ///
   /// This overload is only provided for compatibility existing code that
-  /// defines char arrays for custom characters instead of uint8_t characters.
+  /// defines char arrays instead of uint8_t arrays.
   void loadCustomCharacter(const char * picture, uint8_t number) {
     loadCustomCharacter((const uint8_t *)picture, number);
   }
 
   //////// Member variables and constants
 
-public:
-
+  /// This object handles all low-level communication with the SH1106.
   C core;
 
 private:

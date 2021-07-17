@@ -22,9 +22,6 @@ Adafruit_SSD1306 gfx(128, 64, 13, 13, 13, 13, 13);
 
 void setup()
 {
-  // We call this to allocate the 1024-byte graphics buffer.
-  // It has a side effect of performing some I/O on the pin
-  // numbers passed to the gfx constructor.
   if (!gfx.begin())
   {
     while (1)

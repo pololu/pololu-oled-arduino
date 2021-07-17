@@ -1,6 +1,6 @@
 // This sketch is a basic test of the PololuSH1106 class.
 //
-// It should display two increasing numbers on your OLED.
+// It should display two increasing numbers.
 
 #include <PololuOLED.h>
 
