@@ -49,6 +49,8 @@ void setup()
   {
     memset(display.getLinePointer(line), '0' + line, 21);
   }
+
+  delay(1000);
 }
 
 void loop()
