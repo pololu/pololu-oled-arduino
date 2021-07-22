@@ -2,26 +2,28 @@
 
 ## Summary
 
-This is a library for the Arduino IDE that allows you to display text and
-graphics on a 128x64 SH1106 OLED display with an SPI interface.
-It works with the following Pololu products:
+This is a library for the Arduino IDE that allows you to control a 128x64 SH1106
+OLED display with an SPI interface.  The library supports two modes of
+operation: drawing arbitrary graphics using a pixel buffer that is compatible
+with high-level libraries such as the Adafruit GFX Library, and efficiently
+writing blocks of text to the screen using a built-in LCD-style font.  There
+are several text formats available, and text can be combined with pixel
+graphics, making it easy to achieve a variety of effects.
 
-- [Graphical OLED Display: 128x64, 1.3", White, SPI][3760]
+<p style="text-align: center;">
+<img src="https://a.pololu-files.com/picture/0J11302.175.jpg?e990731185168971da83362c173def9f">
+<img src="https://a.pololu-files.com/picture/0J11301.175.jpg?4a1414e01a2b651c35eb13c4192d5da7">
+</p>
 
-This library can display text without requiring you to store the state of every
-pixel in RAM.
+If you are familiar with the
+[PololuHD44780 LCD library](https://github.com/pololu/pololu-hd44780-arduino),
+it should be easy for you to get started with the text mode of this library or
+to port your existing applications to it, since it provides the same `clear`,
+`gotoXY`, `write`, `print`, and `loadCustomCharacter` functions.
 
-It can also display an external graphics buffer, combining the graphics and text
-together as it writes to the display.
-
-It provides a separation between the low-level hardware access functions and
-the high-level OLED update routines, so that the low-level functions can be
-implemented with efficient application-specific code.
-
-Applications written for the [PololuHD44780 LCD library]
-can often be ported to this library with minimal effort since it provides
-the `clear`, `gotoXY`, `write`, `print`, and `loadCustomCharacter` functions.
-
+For advanced applications, you can customize the low-level hardware access
+functions, for example if your SPI pins are shared with other peripherals
+that you must disable during communication.
 
 ## Supported platforms
 
@@ -31,8 +33,9 @@ This library should work on any Arduino-compatible board.
 
 ### Hardware
 
-An [SH1106 OLED display with an SPI interface][3760] can be purchased from
-Pololu's website.
+This library is intended for the following Pololu products:
+
+- [Graphical OLED Display: 128x64, 1.3", White, SPI][3760]
 
 You will need to connect your Arduino's GND pin to the ground pin of the
 display module, and you will also need to provide an appropriate power source
