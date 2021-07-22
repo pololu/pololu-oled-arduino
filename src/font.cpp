@@ -857,16 +857,16 @@ extern const uint8_t pololuOledFont[][5] PROGMEM __attribute__((weak)) = {
     0b00000000
   },
 
-  // 0x7E right arrow
+  // 0x7E tilde
   {
+    0b00001100,
+    0b00000010,
+    0b00000100,
     0b00001000,
-    0b00001000,
-    0b00101010,
-    0b00011100,
-    0b00001000
+    0b00000110
   },
 
-  // 0x7F left arrow
+  // 0x7F DEL - we put a left arrow here
   {
     0b00001000,
     0b00011100,
