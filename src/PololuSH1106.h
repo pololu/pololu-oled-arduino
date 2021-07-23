@@ -25,7 +25,7 @@ public:
   /// This function should be called at the beginning of your program
   /// before any functions that use the pins.
   ///
-  /// For documention of each parameter, see PololuSH1106::PololuSH1106().
+  /// For documentation of each parameter, see PololuSH1106::PololuSH1106().
   void setPins(uint8_t clk, uint8_t mos, uint8_t res = 255, uint8_t dc = 255,
     uint8_t cs = 255)
   {
@@ -149,7 +149,7 @@ private:
 class PololuSH1106 : public PololuSH1106Main<PololuSH1106Core>
 {
 public:
-  /// @brief Creates a new instanace of PololuSH1106.
+  /// @brief Creates a new instance of PololuSH1106.
   ///
   /// @param clk The pin to use to control the
   ///   SH1106 CLK/SCL/D0 (clock input) pin.

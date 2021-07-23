@@ -201,7 +201,7 @@ public:
     core.sh1106TransferEnd();
   }
 
-  /// @brief Configures the OLED to not invert its pixels (the defualt).
+  /// @brief Configures the OLED to not invert its pixels (the default).
   void noInvert()
   {
     init();

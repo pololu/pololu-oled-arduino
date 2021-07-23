@@ -50,7 +50,7 @@ void drawGraphics()
 {
   for (uint8_t i = 0; i < 8; i++)
   {
-    // Solid diagaonal line on the left side.
+    // Solid diagonal line on the left side.
     graphics[i * 128 + i] = 0xFF;
 
     // Dotted diagonal line left of center.
