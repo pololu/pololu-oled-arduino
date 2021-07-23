@@ -95,7 +95,7 @@ retry the installation instructions above.
 
 ### Documentation
 
-For complete documentation of this library, see the
+For complete documentation of this library, see
 https://pololu.github.io/pololu-oled-arduino.
 
 In particular the documentation of the PololuSH1106Main class gives a good
