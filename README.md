@@ -1,5 +1,9 @@
 # Pololu OLED library for Arduino
 
+Version: 1.0.0<br>
+Release date: 2021-07-23<br>
+[www.pololu.com](https://www.pololu.com/)
+
 ## Summary
 
 This is a library for the Arduino IDE that allows you to control a 128x64 SH1106
@@ -104,7 +108,7 @@ display graphics or text.
 
 ### Version history
 
-* 1.0.0: Original release.
+* 1.0.0 (2021-07-23): Original release.
 
 [3760]: https://www.pololu.com/product/3760
 [PololuHD44780 LCD library]: https://github.com/pololu/pololu-hd44780-arduino
