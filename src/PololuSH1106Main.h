@@ -298,7 +298,7 @@ public:
   }
 
   /// @brief Configures this library to use a layout with
-  /// 20 columns and 8 rows of text.
+  /// 21 columns and 8 rows of text.
   void setLayout21x8()
   {
     graphicsBuffer = nullptr;
@@ -307,7 +307,7 @@ public:
     clearDisplayRamOnNextDisplay = true;
   }
 
-  /// @brief Configures this library to use a layout with 20 columns and
+  /// @brief Configures this library to use a layout with 21 columns and
   /// 8 rows of text, XORed with a graphics buffer.
   ///
   /// @param graphics A pointer to a 1024-byte graphics buffer.
