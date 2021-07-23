@@ -859,6 +859,20 @@ public:
     textCursorY = y;
   }
 
+  /// @brief Gets the X coordinate of the text cursor.
+  uint8_t getX() { return textCursorX; }
+
+  /// @brief Gets the Y coordinate of the text cursor.
+  uint8_t getY() { return textCursorY; }
+
+  /// @brief Moves all the text up one row. (Does not change the cursor position.)
+  void scrollDisplayUp()
+  {
+    memmove(textBuffer, textBuffer + textBufferWidth, textBufferWidth * (textBufferHeight - 1));
+    memset(textBuffer + textBufferWidth * (textBufferHeight - 1), ' ', textBufferWidth);
+    if (!disableAutoDisplay) { display(); }
+  }
+
   /// @brief Clears the text and resets the text cursor to the upper left.
   ///
   /// After calling this function, the text buffer will consist entirely of
