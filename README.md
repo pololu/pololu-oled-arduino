@@ -15,8 +15,8 @@ are several text formats available, and text can be combined with pixel
 graphics, making it easy to achieve a variety of effects.
 
 <p style="text-align: center;">
-<img src="https://a.pololu-files.com/picture/0J11302.175.jpg?e990731185168971da83362c173def9f">
-<img src="https://a.pololu-files.com/picture/0J11301.175.jpg?4a1414e01a2b651c35eb13c4192d5da7">
+<img src="https://a.pololu-files.com/picture/0J11302.176.jpg?e990731185168971da83362c173def9f">
+<img src="https://a.pololu-files.com/picture/0J11301.176.jpg?4a1414e01a2b651c35eb13c4192d5da7">
 </p>
 
 If you are familiar with the

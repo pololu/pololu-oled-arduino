@@ -857,7 +857,7 @@ extern const uint8_t pololuOledFont[][5] PROGMEM __attribute__((weak)) = {
     0b00000000
   },
 
-  // 0x7E tilde
+  // 0x7E ~
   {
     0b00001100,
     0b00000010,
