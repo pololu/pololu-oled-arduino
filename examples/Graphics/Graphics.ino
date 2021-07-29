@@ -78,7 +78,7 @@ void drawSolidRectangle(uint8_t topLeftX, uint8_t topLeftY,
 
 void setup()
 {
-  display.setLayout10x4WithGraphics(graphics);
+  display.setLayout11x4WithGraphics(graphics);
 
   delay(1000);
 }

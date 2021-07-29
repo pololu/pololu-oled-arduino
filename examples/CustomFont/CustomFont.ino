@@ -14,7 +14,7 @@ void setup()
 {
   display.noAutoDisplay();
 
-  display.setLayout10x4();
+  display.setLayout11x4();
   display.gotoXY(0,1);
   display.print("Customized");
   display.gotoXY(0,2);

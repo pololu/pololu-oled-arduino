@@ -31,7 +31,7 @@ void setup()
     }
   }
 
-  display.setLayout10x4WithGraphics(gfx.getBuffer());
+  display.setLayout11x4WithGraphics(gfx.getBuffer());
 
   delay(1000);
 }

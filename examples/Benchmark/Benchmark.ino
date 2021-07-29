@@ -167,33 +167,33 @@ void loop()
   benchmarkEnd();
   benchmarkReport(F("8x2+graphics, partial update, 8 chars"));
 
-  display.setLayout10x4();
+  display.setLayout11x4();
   display.display(); // first display takes extra time clearing RAM
 
   benchmarkStart();
   display.display();
   benchmarkEnd();
-  benchmarkReport(F("10x4, full update"));
+  benchmarkReport(F("11x4, full update"));
 
   display.gotoXY(0, 0);
   benchmarkStart();
   display.print("\6 P7   \7");
   benchmarkEnd();
-  benchmarkReport(F("10x4, partial update, 8 chars"));
+  benchmarkReport(F("11x4, partial update, 8 chars"));
 
-  display.setLayout10x4WithGraphics(graphics);
+  display.setLayout11x4WithGraphics(graphics);
   display.display(); // first display takes extra time clearing RAM
 
   benchmarkStart();
   display.display();
   benchmarkEnd();
-  benchmarkReport(F("10x4+graphics, full update"));
+  benchmarkReport(F("11x4+graphics, full update"));
 
   display.gotoXY(0, 1);
   benchmarkStart();
   display.print("\6 P8   \7");
   benchmarkEnd();
-  benchmarkReport(F("10x4+graphics, partial update, 8 chars"));
+  benchmarkReport(F("11x4+graphics, partial update, 8 chars"));
 
   display.setLayout21x8();
   display.display(); // first display takes extra time clearing RAM
