@@ -19,7 +19,7 @@ void setup()
     display.gotoXY(0,y);
     for(int x = 0; x < 21; x++)
     {
-      display.print('\xff');
+      display.print('#');
     }
   }
 
