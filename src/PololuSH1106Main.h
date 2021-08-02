@@ -440,7 +440,9 @@ private:
     for (uint8_t i = 0; i < textLength; i++)
     {
       uint8_t glyph = *text++;
-      for (uint8_t pixelX = 0; pixelX < 5; pixelX++)
+      // Note the extra check for g < graphicsBuffer + 1023, which avoids
+      // reading past the end of the graphics array in 11x4 mode.
+      for (uint8_t pixelX = 0; pixelX < 5 && g < graphicsBuffer + 1023; pixelX++)
       {
         uint8_t column = PololuOLEDHelpers::repeatBits(
           getGlyphColumn(glyph, pixelX) >> 4);
@@ -494,15 +496,20 @@ private:
     for (uint8_t textX = 0; textX < textLength; textX++)
     {
       uint8_t glyph = *text++;
-      for (uint8_t pixelX = 0; pixelX < 5; pixelX++)
+      // Note the extra check for g < graphicsBuffer + 1023, which avoids
+      // reading past the end of the graphics array in 11x4 mode.
+      for (uint8_t pixelX = 0; pixelX < 5 && g < graphicsBuffer + 1023; pixelX++)
       {
         uint8_t column = PololuOLEDHelpers::repeatBits(
           getGlyphColumn(glyph, pixelX) >> 4);
         core.sh1106Write(column ^ *g++);
         core.sh1106Write(column ^ *g++);
        }
-       core.sh1106Write(*g++);
-       core.sh1106Write(*g++);
+       if(g < graphicsBuffer + 1023)
+       {
+         core.sh1106Write(*g++);
+         core.sh1106Write(*g++);
+       }
     }
     for (uint8_t x = leftMargin + textLength * 12; x < 128; x++)
     {
