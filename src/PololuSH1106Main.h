@@ -449,8 +449,11 @@ private:
         core.sh1106Write(column ^ *g++);
         core.sh1106Write(column ^ *g++);
       }
-      core.sh1106Write(*g++);
-      core.sh1106Write(*g++);
+      if(g < graphicsBuffer + 1023)
+      {
+        core.sh1106Write(*g++);
+        core.sh1106Write(*g++);
+      }
     }
   }
 
