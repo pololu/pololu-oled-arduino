@@ -289,7 +289,7 @@ public:
     clearDisplayRamOnNextDisplay = true;
   }
 
-  /// @brief Configures this library to use a layout with 10 columns and
+  /// @brief Configures this library to use a layout with 11 columns and
   /// 4 rows of text, XORed with a graphics buffer.
   ///
   /// @param graphics A pointer to a 1024-byte graphics buffer.
