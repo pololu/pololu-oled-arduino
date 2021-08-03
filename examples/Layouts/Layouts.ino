@@ -63,11 +63,11 @@ void loop()
   display.display();
   delay(2000);
 
-  display.setLayout10x4();
+  display.setLayout11x4();
   display.display();
   delay(2000);
 
-  display.setLayout10x4WithGraphics(graphics);
+  display.setLayout11x4WithGraphics(graphics);
   display.display();
   delay(2000);
 
