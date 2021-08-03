@@ -20,8 +20,8 @@ noRotate	KEYWORD2
 setContrast	KEYWORD2
 setLayout8x2	KEYWORD2
 setLayout8x2WithGraphics	KEYWORD2
-setLayout10x4	KEYWORD2
-setLayout10x4WithGraphics	KEYWORD2
+setLayout11x4	KEYWORD2
+setLayout11x4WithGraphics	KEYWORD2
 setLayout21x8	KEYWORD2
 setLayout21x8WithGraphics	KEYWORD2
 display	KEYWORD2

@@ -1,7 +1,7 @@
 # Pololu OLED library for Arduino
 
-Version: 1.0.0<br>
-Release date: 2021-07-23<br>
+Version: 2.0.0<br>
+Release date: 2021-08-03<br>
 [www.pololu.com](https://www.pololu.com/)
 
 ## Summary
@@ -108,6 +108,8 @@ display graphics or text.
 
 ### Version history
 
+* 2.0.0 (2021-08-03): Changed 10x4 layout mode to 11x4 to make better use of the
+  available area.
 * 1.0.0 (2021-07-23): Original release.
 
 [3760]: https://www.pololu.com/product/3760
